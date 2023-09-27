@@ -116,7 +116,7 @@ $region = $_GET["region"];
               </tr>
             </thead>
             <tbody id="display">
-              <tr id="clickable-row" style="cursor: pointer">
+              <tr id="clickable-row" class="redirect-row" style="cursor: pointer">
                 <?php
                 $servername = "localhost";
                 $username = "root";

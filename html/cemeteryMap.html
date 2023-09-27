@@ -52,10 +52,10 @@
         <h3 class="container-headr">
           Click a section to book your number of Grave sites
         </h3>
-        <!-- Toggle switch -->
-        <div class="custom-control custom-switch m-4" style="text-align: right;">
-          <input type="checkbox" class="custom-control-input" id="mapToggle">
-          <label class="custom-control-label" for="mapToggle">Switch to Google Maps</label>
+        <div class="btn-group mb-5 mt-4" role="group" aria-label="Basic example" style="display: flex; justify-content: center;">
+          <button type="button" class="btn btn-primary">Google Maps</button>
+          <button type="button" class="btn btn-primary">Simple Map</button>
+          <button type="button" class="btn btn-primary">Table</button>
         </div>
 
         <?xml version="1.0" encoding="utf-8"?>
@@ -155,6 +155,21 @@
         <!-- Google Maps (you can add this part later) -->
         <div id="googleMap" style="display: none;height: 20em; width: 100%; background-color: white;">
           <!-- Google Maps implementation goes here -->
+        </div>
+        <div class="table-responsive" style="display: none;">
+          <table class="table table-hover table-dark">
+            <thead>
+              <tr>
+                <!--should pull the section names and use them as table column names-->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!--should pull the available graves for each corresponding column-->
+                
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

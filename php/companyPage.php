@@ -155,7 +155,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT name, review, created_at FROM reviews ";
+$sql = "SELECT name, review, created_date FROM reviews ";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -163,7 +163,7 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $name = $row["name"];
         $review = $row["review"];
-        $created_at = $row["created_at"];
+        $created_at = $row["created_date"];
 
         // Display the review
         echo "<div>";
