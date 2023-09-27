@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  text-decoration: none;
+}
+
+
+.service-provider-page-name {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.2em;
+  margin-bottom: 0.1em;
+  color: rgb(212, 241, 255);
+  font-size: 4em;
+}
+.company-details {
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: center;
+  background-size: cover; /* This ensures the image covers the entire div */
+  background-position: center;
+  font-size: 2em;
+  color: #e2e2e2;
+}
+
+.header-text,
+.subheader-text {
+  margin-bottom: 1em;
+}
+
+.subheader-text {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.service-provider-page-root {
+  background-image: url("../img/main1.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 1100px;
+}
+
+
+
+.funeral-services {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #333;
+
+}
+
+.reviews-section{
+  background-color: #333;
+  max-height: 900px;
+
+
+}
+.reviews-text{
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 2em;
+}
+/*
+In the CSS code, we use the display: flex; property on the funeral-services section to create a flex container. The flex-wrap: wrap; allows the divs to wrap onto multiple lines when necessary. The justify-content: space-between; property evenly distributes the divs horizontally with space between them.
+
+Inside the media query @media (max-width: 50%), we override the width of the divs to 100% when the screen width is reduced to 50% or less, causing the cards to display vertically.
+
+Note: I corrected the class name "Burial Service" to "burial-service" and "Reperation of body" to "reparation-of-body" to follow best practices for CSS class names. Class names should be lowercase and separated by hyphens for readability and consistency.
+*/

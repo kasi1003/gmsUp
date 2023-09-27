@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  text-decoration: none;
+}
+.cemetery-map-section {
+  background-color: #343a40;
+  width: 100%;
+  height: 45em;
+  display: flex;
+  justify-content: center;
+
+}
+
+.container-headr{
+  font-size:1em;
+  display: flex;
+  justify-content: center;
+}
+
+.cem-section:hover {
+  fill: rgb(39, 39, 39);
+  cursor: pointer;
+}
+.cem-section-back {
+  fill: rgb(145, 145, 145);
+}
+path {
+  fill: #353535;
+}
