@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    text-decoration: none;
+  }
+ 
+  
+  /* Media query for responsive design */
+  .custom-button-width{
+    width: 35px;
+    height: 25px;
+    position: relative;
+  }
+  .custom-button-width i {
+    position: absolute;
+    left: 10px; /* Adjust the left positioning as needed */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .topSection{
+    display: flex;
+    justify-content: center;
+    background-color: #343a40;
+    min-height: 53em;
+  }
+  
+  .service-providers-header-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    
+  }
+  .service-providers-subheading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  
+  }
+  
+  .img-container{
+    width: 100%; /* Adjust the width and height as needed */
+    height: 10em;
+    background:rgb(255, 255, 255);
+    background-size: cover; /* This ensures the image covers the entire div */
+    background-position: center top; /* Center the image within the div */
+  
+  }
+  
+  
+  
