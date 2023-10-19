@@ -4,9 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/companyPage.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  
+  
   <title>Heavenly Tomb | AVBOB</title>
 </head>
 
@@ -41,77 +42,82 @@
 
 
   <!--first section-->
-  <section class="funeral-services">
-    <div class="card border-secondary bg-dark p-2">
-      <div class="card-header border-secondary" style="display: flex; justify-content: center; font-size: 3em; color: white;">
-        Clicked Comapany Name
-      </div>
-      <div class="card-body border-secondary">
-        <h5 class="card-title" style="display: flex; justify-content: center; font-size: 2em; color: white;">Company Details</h5>
-          <div class="row" style="display: flex; justify-content: center;">
-          
-
-<!--card 1-->
-        <div class="card border-secondary bg-dark col-lg-4 m-2 p-2" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title" style="display: flex; justify-content: center; color: white;">Comapany service</h5>
-            <p class="card-text" style="display: flex; justify-content: center; color: white;">Service Descripition</p>
-            <a href="#" class="btn btn-primary" style="display: flex; justify-content: center;">Read More</a>
-          </div>
-        </div>
-<!--card 2-->
-        <div class="card border-secondary bg-dark col-lg-4 m-2 p-2" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title" style="display: flex; justify-content: center; color: white;">Comapany service</h5>
-            <p class="card-text" style="display: flex; justify-content: center; color: white;">Service Descripition</p>
-            <a href="#" class="btn btn-primary" style="display: flex; justify-content: center;">Read More</a>
-          </div>
-        </div>
-<!--card 3-->
-        <div class="card border-secondary bg-dark col-lg-4 m-2 p-2" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title" style="display: flex; justify-content: center; color: white;">Comapany service</h5>
-            <p class="card-text" style="display: flex; justify-content: center; color: white;">Service Descripition</p>
-            <a href="#" class="btn btn-primary" style="display: flex; justify-content: center;">Read More</a>
-          </div>
+<section class="funeral-services">
+<?php
+// Get the service_provider_name from the query parameter
+$serviceProviderName = $_GET['service_provider_name'];
+// Use htmlspecialchars to prevent cross-site scripting (XSS) attacks
+$serviceProviderName = htmlspecialchars($serviceProviderName, ENT_QUOTES, 'UTF-8');
+?>
+<h1 style="display: flex; justify-content: center; color: white; margin-top:0.5em; font-size: 5em;"><?php echo $serviceProviderName; ?>
+</h1>
+  <h2 style="display: flex; justify-content: center; color: white;">Company Motto</h2>
+<div style="display: flex; justify-content: center;">
+  <div class="accordion w-75 m-4" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+          <h2>Company Motto</h2>
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+        <div class="accordion-body">
+          <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
         </div>
       </div>
     </div>
-  </section>
-
-  <!--review section-->
-  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
     
-    <div class="carousel-item">
-      <div class="card text-center">
-        <div class="card-header">
-          Commenter name
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-        <div class="card-footer text-muted">
-          2 days ago
-        </div>
+  </div>
+</div>
+<h2 style="display: flex; justify-content: center; color: white;">Services</h2>
+<div style="display: flex; justify-content: center;">
+<div class="accordion w-75" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
       </div>
     </div>
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        Accordion Item #2
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Accordion Item #3
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+
+</section>
+
+  <!--review section-->
   
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
   <script src="../js/companyPage.js"></script>
 </body>
 
@@ -147,32 +153,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit-rev"])) {
 $conn->close();
 ?>
 
-<!-- Your form modal with Bootstrap cards and inputs should be here -->
 
-<?php
-$conn = new mysqli($db_host, $db_username, $db_password, $db_table);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT name, review, created_date FROM reviews ";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // Output each review
-    while ($row = $result->fetch_assoc()) {
-        $name = $row["name"];
-        $review = $row["review"];
-        $created_at = $row["created_date"];
-
-        // Display the review
-        echo "<div>";
-        echo "<p>Name: $name</p>";
-        echo "<p>Review: $review</p>";
-        echo "<p>Date: $created_at</p>";
-        echo "</div>";
-    }
-}
-
-$conn->close();
-?>
