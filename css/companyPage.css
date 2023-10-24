@@ -47,7 +47,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background-color: #333;
+  background-color: #343a40;
 
 }
 
@@ -63,10 +63,26 @@
   color: white;
   font-size: 2em;
 }
-/*
-In the CSS code, we use the display: flex; property on the funeral-services section to create a flex container. The flex-wrap: wrap; allows the divs to wrap onto multiple lines when necessary. The justify-content: space-between; property evenly distributes the divs horizontally with space between them.
+.text-color-custom {
+  color: white;
+}
+/* Change text color when button is hovered or focused */
+.text-color-custom:hover,
+.text-color-custom:focus {
+    color: white;
+}
+.company-motto-text{
+  color: white;
+}
+.motto-description{
+  color: black;
 
-Inside the media query @media (max-width: 50%), we override the width of the divs to 100% when the screen width is reduced to 50% or less, causing the cards to display vertically.
-
-Note: I corrected the class name "Burial Service" to "burial-service" and "Reperation of body" to "reparation-of-body" to follow best practices for CSS class names. Class names should be lowercase and separated by hyphens for readability and consistency.
-*/
+}
+.img-container{
+  width:6em;
+  height:6em;
+  background-color: rgb(0, 132, 255);
+}
+.custom-card{
+  background-color: #343a40;
+}

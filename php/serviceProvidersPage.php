@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Fetch service provider data from the database
-$sql = "SELECT service_provider_name, total_burials, successful_burials, unsuccessful_burials FROM service_providers";
+$sql = "SELECT id, service_provider_name, total_burials, successful_burials, unsuccessful_burials FROM service_providers";
 $result = $conn->query($sql);
 
 $providers = array();

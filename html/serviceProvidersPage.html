@@ -33,18 +33,13 @@
             aria-haspopup="true" aria-expanded="false">
             Service Providers
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="avbobPage.html">AVBOB</a>
-            <a class="dropdown-item" href="serviceProvidersPage.html">View More</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="serviceProvidersDropdown">
           </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="cemeteries.html">Buy a Grave</a>
-        </li>
-
       </ul>
     </div>
   </nav>
+
 
   <!--home landing page-->
   <section class="top-container">
@@ -76,10 +71,22 @@
             </thead>
             <tbody id="serviceProvidersTableBody">
               <tr id="clickable-row" style="cursor: pointer">
-
+                
               </tr>
             </tbody>
           </table>
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const rows = document.querySelectorAll(".clickable-row");
+        
+                rows.forEach((row) => {
+                    row.addEventListener("click", function () {
+                        const companyId = row.getAttribute("data-companyid");
+                        window.location.href = `companyPage.php?companyId=${companyId}`;
+                    });
+                });
+            });
+        </script>
         </div>
       </div>
     </div>
