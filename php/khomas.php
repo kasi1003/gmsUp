@@ -49,10 +49,7 @@ $region = $_GET["region"];
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="cemeteries.html">Buy a Grave</a>
-        </li>
-        <li class="nav-item-right">
-          <a class="nav-link" href="notification.html">Notification</a>
+          <a class="nav-link" href="../php/quotation.php">Quotation Feedback</a>
         </li>
 
       </ul>

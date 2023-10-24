@@ -33,37 +33,37 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="serviceProvidersDropdown">
           </div>
         </li>
-
-
+        <li class="nav-item">
+          <a class="nav-link" href="../php/quotation.php">Quotation Feedback</a>
+        </li>
+    
       </ul>
     </div>
   </nav>
 
-
   <!--first section-->
   <section class="funeral-services">
     <div class="card border-secondary text-white mb-3 w-75 mx-auto m-5 custom-card">
-      <div class="card-header border-secondary w-100" style="display: flex; align-items: center;">
+      <div class="card-header border-secondary w-100">
         <?php
         // Get the service_provider_name from the query parameter
         $serviceProviderName = $_GET['service_provider_name'];
         // Use htmlspecialchars to prevent cross-site scripting (XSS) attacks
         $serviceProviderName = htmlspecialchars($serviceProviderName, ENT_QUOTES, 'UTF-8');
         ?>
-        <div class="img-container">
-          <!-- Add your image here -->
-          <img src="your-image-source.jpg" alt="img">
+        <div style="display: flex; justify-content: center;align-items: center;">
+          <div class="img-container">
+            <!-- Add your image here -->
+            <img src="your-image-source.jpg" alt="img">
+          </div>
+          <h1
+            style="display: flex; align-items: center; color: white; margin-top: 0.5em; font-size: 4rem; margin-left: 0.2em;">
+            <?php echo $serviceProviderName; ?>
+          </h1>
         </div>
-        <h1
-          style="display: flex; align-items: center; color: white; margin-top: 0.5em; font-size: 5em; margin-left: 0.2em;">
-          <?php echo $serviceProviderName; ?>
-        </h1>
       </div>
 
       <div class="card-body">
-
-
-        <h2 style="display: flex; justify-content: center; color: white;">Company Motto</h2>
         <div style="display: flex; justify-content: center;">
           <div class="accordion w-75 m-4" id="accordionPanelsStayOpenExample">
             <?php
@@ -99,7 +99,7 @@
                 aria-labelledby="panelsStayOpen-headingOne">
                 <div class="accordion-body">
                   <h6 class="motto-description">
-                    
+
                     <?php echo $companyMotto; ?>
                   </h6>
                 </div>
@@ -109,7 +109,7 @@
 
           </div>
         </div>
-        <h2 style="display: flex; justify-content: center; color: white;">Services</h2>
+        <h2 style="display: flex; justify-content: center; color: white;">Funeral Services Offered</h2>
         <div style="display: flex; justify-content: center;">
           <div class="accordion w-75" id="accordionExample">
 
