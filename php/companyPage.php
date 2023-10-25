@@ -110,61 +110,59 @@
           </div>
         </div>
         <h2 style="display: flex; justify-content: center; color: white;">Funeral Services Offered</h2>
-        <div style="display: flex; justify-content: center;">
-          <div class="accordion w-75" id="accordionExample">
+        <div style="display: flex; justify-content: center; width: 100%;">
+        <div class="card w-100 border-secondary mx-auto custom-card-1">
+          <div class="card-body">
+          <?php
 
+          $companyName = $_GET['service_provider_name'];
 
-            <?php
+// Fetch company details based on the company name
+          $sql = "SELECT id FROM service_providers WHERE service_provider_name = '$companyName'";
+          $result = $conn->query($sql);
 
-            $companyName = $_GET['service_provider_name'];
+          if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $companyId = $row['id'];
 
-            // Fetch company details based on the company name
-            $sql = "SELECT id FROM service_providers WHERE service_provider_name = '$companyName'";
-            $result = $conn->query($sql);
+            // Fetch associated services
+            $servicesQuery = "SELECT service_name, service_description FROM services WHERE provider_id = $companyId";
+            $servicesResult = $conn->query($servicesQuery);
 
-            if ($result->num_rows > 0) {
-              $row = $result->fetch_assoc();
-              $companyId = $row['id'];
-
-              // Fetch company details
-              $companyQuery = "SELECT * FROM service_providers WHERE id = $companyId";
-              $companyResult = $conn->query($companyQuery);
-              $companyData = $companyResult->fetch_assoc();
-
-              // Fetch associated services
-              $servicesQuery = "SELECT service_name, service_description FROM services WHERE provider_id = $companyId";
-              $servicesResult = $conn->query($servicesQuery);
-            } else {
-              // Handle the case where the company name is not found
-              echo "Company not found";
-            }
-
-            $index = 1; // Use this index to give unique IDs to each accordion
-            
+            $index = 1;
+            echo '<div class="row">';
             while ($service = $servicesResult->fetch_assoc()) {
               $accordionID = 'collapse' . $index;
-              $headingID = 'heading' . $index;
-              ?>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="<?php echo $headingID; ?>">
-                  <button class="accordion-button bg-dark text-color-custom" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#<?php echo $accordionID; ?>" aria-expanded="true"
-                    aria-controls="<?php echo $accordionID; ?>">
-                    <?php echo $service['service_name']; ?>
-                  </button>
-                </h2>
-                <div id="<?php echo $accordionID; ?>" class="accordion-collapse collapse"
-                  aria-labelledby="<?php echo $headingID; ?>" data-bs-parent="#accordionExample">
-                  <div class="accordion-body bg-primary">
-                    <?php echo $service['service_description']; ?>
-                  </div>
-                </div>
-              </div>
-              <?php
-              $index++;
-            }
+
+              if (($index - 1) % 3 == 0) {
+                // Start a new row for every 3 cards
+                echo '</div><div class="row">';
+              }
             ?>
+          <div class="col-md-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo $service['service_name']; ?></h5>
+                    <p class="card-text"><?php echo $service['service_description']; ?></p>
+                    <button type="button" class="btn btn-primary">Read More</button>
+
+                </div>
+            </div>
           </div>
+          <?php
+          $index++;
+            }
+          echo '</div>';
+          } else {
+          // Handle the case where the company name is not found
+            echo "Company not found";
+          }
+          ?>
+
+    
+          </div>
+        </div>
+        
 
           <?php
           $conn->close();

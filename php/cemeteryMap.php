@@ -12,7 +12,6 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <title>Document</title>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -50,10 +49,10 @@
                         <a class="nav-link active" href="#">Cemetery Table</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Simple Map</a>
+                        <a class="nav-link text-light" href="#">Simple Map</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Google Maps</a>
+                        <a class="nav-link text-light" href="#">Google Maps</a>
                     </li>
 
                 </ul>
@@ -92,10 +91,11 @@
                 ?>
 
                 <h3 class="card-title" style="color: white;">
-                    <?php echo $cemeteryName; ?>
+                    <?php echo $cemeteryName; ?> Cemetery
                 </h3>
-
-                <?php
+                <div class="card bg-dark border-secondary">
+                    <div class="card-body">
+                    <?php
                 // Step 3: Fetch sections based on CemeteryID
                 $conn = new mysqli($servername, $username, $password, $dbname);
                 if ($conn->connect_error) {
@@ -106,28 +106,59 @@
                 $result = $conn->query($sql);
 
                 // Step 4: Create the table with column names
+                
+                // ... Previous code ...
+            
+                echo '<div class="container justify-content-center">'; // Center the content
+                echo '<div class="custom-card-deck">'; // Apply custom styling to the card-deck
+            
                 if ($result->num_rows > 0) {
-                    echo '<div class="table-responsive">';
-                    echo '<table class="table table-hover table-dark">';
-                    echo '<thead><tr>';
+                    $index = 0;
+            
                     while ($row = $result->fetch_assoc()) {
-                        echo '<th>' . $row['SectionCode'] . '</th>';
+                        if ($index % 4 == 0) {
+                            if ($index > 0) {
+                                echo '</div>';
+                            }
+                            echo '<div class="row">';
+                        }
+            
+                        echo '<div class="col-md-3">';
+                        echo '<div class="card bg-dark text-light border-secondary w-100 m-3">';
+                        echo '<div class="card-body">';
+                        echo '<h5 class="card-title">' . $row['SectionCode'] . '</h5>';
+                        echo '<p class="card-text">Available Graves: ' . $row['AvailableGraves'] . '</p>';
+                        echo '<a href="#" class="btn btn-primary" onclick="redirectToBooking(\'' . $row['SectionCode'] . '\')">Buy Grave</a>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+            
+                        $index++;
                     }
-                    echo '</tr></thead><tbody>';
-
-                    // Step 5: Populate the table with AvailableGraves
-                    $result->data_seek(0);
-                    echo '<tr>';
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<td>' . $row['AvailableGraves'] . '</td>';
+            
+                    if ($index % 4 != 0) {
+                        echo '</div>';
                     }
-                    echo '</tr></tbody></table></div>';
+            
+                    echo '</div>';
                 } else {
                     echo '<div style="color: white;">No sections found for this cemetery.</div>';
                 }
-
+            
+                
+                echo '</div>'; // Close the custom-card-deck
+                echo '</div>'; // Close the container
+            
+            
+            
+            
                 $conn->close();
                 ?>
+    
+                    </div>
+                </div>
+
+                
             </div>
 
         </div>
@@ -135,6 +166,12 @@
 
 
     </section>
+    <script>
+    function redirectToBooking(sectionCode) {
+        window.location.href = '../php/cemeteriesBooking.php?sectionCode=' + sectionCode;
+    }
+    </script>
+
     <script src="../js/cemeteryMap.js"></script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
     </script>
