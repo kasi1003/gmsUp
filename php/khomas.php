@@ -96,31 +96,57 @@ $region = $_GET["region"];
             if ($conn->connect_error) {
               die("Connection failed: " . $conn->connect_error);
             }
-            // Retrieve the region parameter from the URL
-            $region = $_GET["region"];
-            // Query the cemeteries table for rows matching the region
-            $sql = "SELECT * FROM cemeteries WHERE Region = '$region'";
-            $result = $conn->query($sql);
-            // Check if there are rows to display
-            if ($result->num_rows > 0) {
-              // Loop through the rows and generate table rows
-              while ($row = $result->fetch_assoc()) {
-                echo '<tr data-cemeteryname="' . $row['CemeteryName'] . '" class="redirect-row" style="cursor: pointer">';
-                echo '<td>' . $row['CemeteryName'] . '</td>';
-                echo '<td>' . $row['NumberOfSections'] . '</td>';
-                echo '<td>' . $row['Town'] . '</td>';
-                echo '<td>' . $row['TotalGraves'] . '</td>';
-                echo '<td>' . $row['AvailableGraves'] . '</td>';
-                echo '<td><button type="button" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+            if (isset($_GET["region"])) {
+              // Retrieve the region parameter from the URL
+              $region = $_GET["region"];
+
+              // Query the regions table to get the ID for the specified region
+              $regionQuery = "SELECT id FROM regions WHERE region_name = '$region'";
+              $regionResult = $conn->query($regionQuery);
+
+              // Check if the query executed successfully
+              if ($regionResult->num_rows > 0) {
+                $regionRow = $regionResult->fetch_assoc();
+                $regionID = $regionRow['id'];
+
+                // Now, you can use $regionID in your main query
+                // Use a JOIN operation to fetch data from both tables
+                $sql = "SELECT c.* FROM cemetery AS c
+ INNER JOIN regions AS r ON c.Region = r.id
+ WHERE r.id = $regionID";
+                $result = $conn->query($sql);
+
+                if ($result) {
+                  // Check if there are rows to display
+                  if ($result->num_rows > 0) {
+                    // Loop through the rows and generate table rows
+                    while ($row = $result->fetch_assoc()) {
+                      echo '<tr data-cemeteryname="' . $row['CemeteryName'] . '" class="redirect-row" style="cursor: pointer">';
+                      echo '<td>' . $row['CemeteryName'] . '</td>';
+                      echo '<td>' . $row['NumberOfSections'] . '</td>';
+                      echo '<td>' . $row['Town'] . '</td>';
+                      echo '<td>' . $row['TotalGraves'] . '</td>';
+                      echo '<td>' . $row['AvailableGraves'] . '</td>';
+                      echo '<td><button type="button" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
           <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
           <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
         </svg></button></td>';
-                echo '</tr>';
+                      echo '</tr>';
+                    }
+                  } else {
+                    // Query execution failed
+                    echo "Error executing main query: " . $conn->error;
+                  }
+                } else {
+                  // Region not found
+                  echo "Region not found in the database";
+                }
+              } else {
+                // Query execution for region lookup failed
+                echo "Error executing region query: " . $conn->error;
               }
-            } else {
-              // No rows found
-              echo '<tr><td colspan="5">No data available</td></tr>';
             }
+
             // Close the database connection
             $conn->close();
             ?>

@@ -36,7 +36,7 @@
         <li class="nav-item">
           <a class="nav-link" href="../php/quotation.php">Quotation Feedback</a>
         </li>
-    
+
       </ul>
     </div>
   </nav>
@@ -111,58 +111,138 @@
         </div>
         <h2 style="display: flex; justify-content: center; color: white;">Funeral Services Offered</h2>
         <div style="display: flex; justify-content: center; width: 100%;">
-        <div class="card w-100 border-secondary mx-auto custom-card-1">
-          <div class="card-body">
-          <?php
+          <div class="card w-100 border-secondary mx-auto custom-card-1">
+            <div class="card-body">
+              <?php
 
-          $companyName = $_GET['service_provider_name'];
+              $companyName = $_GET['service_provider_name'];
 
-// Fetch company details based on the company name
-          $sql = "SELECT id FROM service_providers WHERE service_provider_name = '$companyName'";
-          $result = $conn->query($sql);
+              // Fetch company details based on the company name
+              $sql = "SELECT id FROM service_providers WHERE service_provider_name = '$companyName'";
+              $result = $conn->query($sql);
 
-          if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $companyId = $row['id'];
+              if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $companyId = $row['id'];
 
-            // Fetch associated services
-            $servicesQuery = "SELECT service_name, service_description FROM services WHERE provider_id = $companyId";
-            $servicesResult = $conn->query($servicesQuery);
+                // Fetch associated services
+                $servicesQuery = "SELECT service_name, service_description FROM services WHERE provider_id = $companyId";
+                $servicesResult = $conn->query($servicesQuery);
 
-            $index = 1;
-            echo '<div class="row">';
-            while ($service = $servicesResult->fetch_assoc()) {
-              $accordionID = 'collapse' . $index;
+                $index = 1;
+                echo '<div class="row">';
+                while ($service = $servicesResult->fetch_assoc()) {
+                  $accordionID = 'collapse' . $index;
 
-              if (($index - 1) % 3 == 0) {
-                // Start a new row for every 3 cards
-                echo '</div><div class="row">';
+                  if (($index - 1) % 3 == 0) {
+                    // Start a new row for every 3 cards
+                    echo '</div><div class="row">';
+                  }
+                  ?>
+                  <div class="col-md-4">
+                    <div class="card bg-dark border-secondary">
+                      <div class="card-body">
+                        <h5 class="card-title">
+                          <?php echo $service['service_name']; ?>
+                        </h5>
+                        <p class="card-text">
+                          <?php echo $service['service_description']; ?>
+                        </p>
+                        <button type="button" class="btn btn-primary">Read More</button>
+
+                      </div>
+                    </div>
+                  </div>
+                  <?php
+                  $index++;
+                }
+                echo '</div>';
+              } else {
+                // Handle the case where the company name is not found
+                echo "Company not found";
               }
-            ?>
-          <div class="col-md-4">
-            <div class="card bg-dark border-secondary">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo $service['service_name']; ?></h5>
-                    <p class="card-text"><?php echo $service['service_description']; ?></p>
-                    <button type="button" class="btn btn-primary">Read More</button>
+              ?>
 
+
+            </div>
+            <?php
+            if (!empty($_POST['send'])) {
+              $name = $_POST['name'];
+              $userEmail = $_POST['userEmail'];
+              $userMessage = $_POST['userMessage'];
+
+              // Check if the "service_provider_name" parameter is present in the URL
+              if (isset($_GET['service_provider_name'])) {
+                $serviceProviderName = $_GET['service_provider_name'];
+                // Query the database to get the email for the specified service provider
+                $sql = "SELECT email FROM service_providers WHERE service_provider_name = '$serviceProviderName'";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                  $row = $result->fetch_assoc();
+                  $toEmail = $row['email'];
+
+                  // You can use $toEmail as the recipient email address for sending the email
+                  // Example: mail($toEmail, $subject, $userMessage, "From: $userEmail");
+            
+                  // Close the database connection
+                  $conn->close();
+                } else {
+                  echo "Service provider not found or email not available.";
+                }
+              } else {
+                echo "Service provider name not provided in the URL.";
+              }
+              $subject = "Contact Form Submission from $name";
+
+              // Construct the email headers
+              $mailHeaders = "From: $userEmail\r\n";
+              $mailHeaders .= "Reply-To: $userEmail\r\n";
+              $mailHeaders .= "MIME-Version: 1.0\r\n";
+              $mailHeaders .= "Content-Type: text/plain; charset=utf-8\r\n";
+
+              // Send the email
+              if (mail($toEmail, $subject, $userMessage, $mailHeaders)) {
+                $message = "Your information has been received successfully.";
+              } else {
+                $message = "Failed to send the email.";
+              }
+
+            }
+
+
+
+
+            ?>
+            <div class="form-container">
+              <form method="post" action="companyPage.php">
+                <div class="input-row">
+                  <label for="name">Name</label>
+                  <input type="text" name="name">
                 </div>
+                <div class="input-row">
+                  <label for="email">Email</label>
+                  <input type="text" name="userEmail">
+                </div>
+                <div class="input-row">
+                  <label for="name">Message</label>
+                  <textarea type="text" name="userMessage">
+                </div>
+                <input type="submit" name="send" value="Submit">
+                <?php
+                if (!empty($message)) {
+                  ?>
+                  <div class="success">
+                    <strong><?php echo $message; ?></strong>
+                  </div>
+                  <?php
+                }
+                ?>
+              </form>
+
             </div>
           </div>
-          <?php
-          $index++;
-            }
-          echo '</div>';
-          } else {
-          // Handle the case where the company name is not found
-            echo "Company not found";
-          }
-          ?>
 
-    
-          </div>
-        </div>
-        
 
           <?php
           $conn->close();

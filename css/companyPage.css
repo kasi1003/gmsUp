@@ -48,6 +48,7 @@
   justify-content: center;
   flex-direction: column;
   background-color: #343a40;
+  min-height: 100em;
 
 }
 
@@ -89,4 +90,58 @@
 .custom-card-1{
   background-color: #343a40;
 
+}
+.form-container{
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  color:#343a40;
+  background: #000;
+  
+}
+.input-row{
+  margin-bottom: 10px;
+
+}
+.input-row label{
+  display: block;
+  margin-bottom: 3px;
+  
+}
+.input-row input,
+.input-row textarea{
+  width: 100%;
+  padding: 10px;
+  border-radius: 3px;
+  outline: 0;
+  margin-bottom: 3px;
+  font-size: 18px;
+  
+
+  
+}
+.input-row textarea{
+  height: 100px;
+  
+}
+.input-row input[type="submit"]{
+  width: 100px;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  background:#002f3a;
+  
+}
+.success{
+  background: #9fd2a1;
+  padding: 5px 10px;
+  text-align: center;
+  color: #326b07;
+  border-radius: 3px;
+  font-synthesis: 14px;
+  margin-top: 10px
 }
