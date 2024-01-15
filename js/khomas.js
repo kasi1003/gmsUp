@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
   
 
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error fetching data:", error);
       });
   }
+  
 
   // Call the fetchCemeteriesByRegion function to fetch and display the data
   fetchCemeteriesByRegion();
