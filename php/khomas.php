@@ -56,88 +56,104 @@ $region = $_GET["region"];
       <div class="card-header border-secondary">
         <h1 class="service-providers-header-text"><?php echo $region; ?> Region</h1>
         <p class="service-providers-subheading">
-          Bellow you will find all cemeteries in <?php echo $region; ?> Region
+          Below you will find all cemeteries in <?php echo $region; ?> Region
         </p>
       </div>
       <div class="card-body text-secondary">
         <!--service providers details, maybe use table instead that pulls from database-->
         <div class="input-group mb-3">
 
-          <input type="text" class="form-control" placeholder="Search Cemetery" aria-label="" aria-describedby="basic-addon1" />
+          
         </div>
         <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "htdb";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "htdb";
 
-        $conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-        // Retrieve the region parameter from the URL
-        $region = $_GET["region"];
+// Retrieve the region parameter from the URL
+$region_name = $_GET["region"];
 
-        // Query the regions table to get the region ID
-        $sqlRegion = "SELECT id FROM regions WHERE region_name = '$region'";
-        $resultRegion = $conn->query($sqlRegion);
+// Query the regions table for the region ID based on the region name
+$sqlRegion = "SELECT region_id FROM regions WHERE name = ?";
+$stmtRegion = $conn->prepare($sqlRegion);
+$stmtRegion->bind_param("s", $region_name);
+$stmtRegion->execute();
+$resultRegion = $stmtRegion->get_result();
 
-        if ($resultRegion->num_rows > 0) {
-          $rowRegion = $resultRegion->fetch_assoc();
-          $regionID = $rowRegion['id'];
+// Check if the region ID is found
+if ($resultRegion->num_rows > 0) {
+    $rowRegion = $resultRegion->fetch_assoc();
+    $region_id = $rowRegion['region_id'];
 
-          // Query the cemetery table for rows matching the region
-          $sqlCemetery = "SELECT CemeteryName, Town, NumberOfSections, TotalGraves, AvailableGraves FROM cemetery WHERE Region = '$regionID'";
-          $resultCemetery = $conn->query($sqlCemetery);
+    // Query the towns table for towns belonging to the selected region
+    $sqlTowns = "SELECT town_id, name FROM towns WHERE region_id = ?";
+    $stmtTowns = $conn->prepare($sqlTowns);
+    $stmtTowns->bind_param("i", $region_id);
+    $stmtTowns->execute();
+    $resultTowns = $stmtTowns->get_result();
 
-          // Check if there are rows to display
-          if ($resultCemetery->num_rows > 0) {
-            // Output the HTML table header
-            echo '
-        <table class="table table-hover table-dark">
-            <thead>
-                <tr>
-                    <th scope="col">Cemetery Name</th>
-                    <th scope="col">Number of Sections</th>
-                    <th scope="col">Town</th>
-                    <th scope="col">Total Graves</th>
-                    <th scope="col">Available Graves</th>
-                    <th scope="col">Location</th>
-                </tr>
-            </thead>
-            <tbody id="display">
-        ';
+    // Check if there are towns to display
+    if ($resultTowns->num_rows > 0) {
+        // Output the list of towns in a top-down layout
+        echo '<div class="towns-container">';
+        while ($rowTown = $resultTowns->fetch_assoc()) {
+            echo '<div class="town">';
+            echo '<h2>' . $rowTown['name'] . '</h2>';
+            
+            // Query the cemetery table for cemeteries belonging to the current town
+            $sqlCemeteries = "SELECT CemeteryName FROM cemetery WHERE Town = ?";
+            $stmtCemeteries = $conn->prepare($sqlCemeteries);
+            $stmtCemeteries->bind_param("i", $rowTown['town_id']); // Assuming town_id is an integer
+            $stmtCemeteries->execute();
+            $resultCemeteries = $stmtCemeteries->get_result();
 
-            // Loop through the rows and generate table rows
-            while ($rowCemetery = $resultCemetery->fetch_assoc()) {
-              echo '<tr class="redirect-row" style="cursor: pointer" onclick="window.location.href=\'../php/cemeteryMap.php?cemetery_id=' . $rowCemetery['CemeteryID'] . '&cemetery_name=' . urlencode($rowCemetery['CemeteryName']) . '\';">';
-              echo '<td>' . $rowCemetery['CemeteryName'] . '</td>';
-              echo '<td>' . $rowCemetery['NumberOfSections'] . '</td>';
-              echo '<td>' . $rowCemetery['Town'] . '</td>';
-              echo '<td>' . $rowCemetery['TotalGraves'] . '</td>';
-              echo '<td>' . $rowCemetery['AvailableGraves'] . '</td>';
-              echo '<td><a class="btn btn-primary" href="#" role="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999zm2.493 8.574a.5.5 0 0 1-.411.575c-.712.118-1.28.295-1.655.493a1.319 1.319 0 0 0-.37.265.301.301 0 0 0-.057.09V14l.002.008a.147.147 0 0 0 .016.033.617.617 0 0 0 .145.15c.165.13.435.27.813.395.751.25 1.82.414 3.024.414s2.273-.163 3.024-.414c.378-.126.648-.265.813-.395a.619.619 0 0 0 .146-.15.148.148 0 0 0 .015-.033L12 14v-.004a.301.301 0 0 0-.057-.09 1.318 1.318 0 0 0-.37-.264c-.376-.198-.943-.375-1.655-.493a.5.5 0 1 1 .164-.986c.77.127 1.452.328 1.957.594C12.5 13 13 13.4 13 14c0 .426-.26.752-.544.977-.29.228-.68.413-1.116.558-.878.293-2.059.465-3.34.465-1.281 0-2.462-.172-3.34-.465-.436-.145-.826-.33-1.116-.558C3.26 14.752 3 14.426 3 14c0-.599.5-1 .961-1.243.505-.266 1.187-.467 1.957-.594a.5.5 0 0 1 .575.411z"/>
-                  </svg></a></td>';
-              echo '</tr>';
+            // Check if there are cemeteries to display
+            if ($resultCemeteries->num_rows > 0) {
+                // Output the list of cemeteries with clickable buttons
+                echo '<div class="cemeteries-container">';
+                while ($rowCemetery = $resultCemeteries->fetch_assoc()) {
+                    echo '<button class="cemetery-button" onclick="navigateToCemetery(\'' . $rowCemetery['CemeteryName'] . '\')">' . $rowCemetery['CemeteryName'] . '</button>';
+                }
+                echo '</div>';
+            } else {
+                // No cemeteries found for the current town
+                echo '<p>No cemeteries found for ' . $rowTown['name'] . '</p>';
             }
 
-            // Output the HTML table closing tags
-            echo '</tbody></table>';
-          } else {
-            // No rows found
-            echo '<p>No data available</p>';
-          }
-        } else {
-          // Region not found
-          echo '<p>Region not found</p>';
+            echo '</div>'; // Close town div
         }
+        echo '</div>'; // Close towns-container div
+    } else {
+        // No towns found for the selected region
+        echo '<p>No towns found for the selected region.</p>';
+    }
+} else {
+    // Region name not found
+    echo '<p>Region not found.</p>';
+}
 
-        // Close the database connection
-        $conn->close();
-        ?>
+// Close the database connection
+$conn->close();
+?>
+
+<script>
+    function navigateToCemetery(cemeteryName) {
+        // Redirect to cemeteryMap.php with the cemetery_name parameter
+        window.location.href = 'cemeteryMap.php?cemetery_name=' + encodeURIComponent(cemeteryName);
+    }
+</script>
+
+
+
+
+
 
 
       </div>

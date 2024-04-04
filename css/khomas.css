@@ -48,8 +48,33 @@
     background:rgb(255, 255, 255);
     background-size: cover; /* This ensures the image covers the entire div */
     background-position: center top; /* Center the image within the div */
-  
+
   }
   
-  
+  .towns-container {
+    text-align: center; /* Center align town names */
+    display: flex; /* Use flexbox to create a flexible layout */
+    flex-wrap: wrap; /* Allow towns to wrap to the next row */
+    justify-content: flex-start; /* Align towns to start at the same position */
+}
+.town {
+    text-align: center; /* Center align town name */
+    margin: 0 20px 20px 0; /* Add margin between towns for horizontal spacing */
+    width: calc(33.33% - 20px); /* Adjust the width for 3 towns in a row */
+}
+.cemeteries-container {
+    padding: 10px; /* Add padding for spacing */
+    text-align: center; /* Center align buttons */
+    margin-top: 10px; /* Add some space between towns and cemeteries */
+    
+}
+.cemetery-button {
+    display: block;
+    width: 100%; /* Adjust the width as needed */
+    padding: 5px;
+    margin-bottom: 5px; /* Add margin between buttons */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
   

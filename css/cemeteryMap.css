@@ -35,3 +35,75 @@ path {
 tr:hover .cem-section {
   fill: rgb(39, 39, 39);
 }
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  max-width: 50%;
+  max-height: 50%;
+}
+.section-container {
+  display: flex;
+  flex-wrap: wrap; /* Ensure sections wrap to the next line */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 2em; /* Adjust padding as needed */
+}
+
+.section-box-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px; /* Adjust as needed */
+  
+}
+
+.section-box {
+  width: 14%; /* Adjust width as needed */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.section-box a {
+  text-decoration: none;
+  color: inherit;
+    text-align: center;
+    transition: background-color 0.9s ease;
+}
+
+.section-box:hover {
+  background-color: rgba(224, 224, 224, 1.0);
+}
+
+.section-box svg {
+  width: 100%; /* Make the SVG fill the entire width of the container box */
+  height: auto; /* Auto size the height to maintain aspect ratio */
+}
+.section-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: rgb(36, 120, 255);
+}
+
+.section-type {
+  font-size: 1em;
+  color: #fff;
+}
+
+.svg-map-container {
+  width: 100%; /* Adjust width as needed */
+  margin: 0 auto; /* Center the container horizontally */
+  border-bottom: 1px solid #ccc; /* Add a border at the bottom */
+  padding: 5px;
+}
+
+
+/* Style for SVG map */
+.svg-map {
+  width: 100%; /* Adjust width as needed */
+  height: 100%; /* Maintain aspect ratio */
+  max-width: 100%; /* Ensure SVG doesn't exceed container width */
+  display: block; /* Ensure SVG is displayed as a block element */
+}

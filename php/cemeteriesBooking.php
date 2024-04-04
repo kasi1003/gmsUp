@@ -1,47 +1,3 @@
-<?php
-//payment gateway
-//encryption key set in the Merchant Access Portal
-$encryptionKey = 'secret';
-
-$DateTime = new DateTime();
-
-$data = array(
-    'PAYGATE_ID'        => 10011072130,
-    'REFERENCE'         => 'pgtest_123456789',
-    'AMOUNT'            => 3299,//based on user input
-    'CURRENCY'          => 'NAD',
-    'RETURN_URL'        => 'https://my.return.url/page',//when transaction is done it should take you to another page
-    'TRANSACTION_DATE'  => $DateTime->format('Y-m-d H:i:s'),
-    'LOCALE'            => 'en-za',
-    'COUNTRY'           => 'NAM',
-    'EMAIL'             => 'customer@paygate.co.za',
-);
-
-$checksum = md5(implode('', $data) . $encryptionKey);
-
-$data['CHECKSUM'] = $checksum;
-
-$fieldsString = http_build_query($data);
-
-//open connection
-$ch = curl_init();
-
-//set the url, number of POST vars, POST data
-curl_setopt($ch, CURLOPT_URL, 'https://secure.paygate.co.za/payweb3/initiate.trans');
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_NOBODY, false);
-curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $fieldsString);
-
-//execute post
-$result = curl_exec($ch);
-
-//close connection
-curl_close($ch);
-
-
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -108,171 +64,154 @@ curl_close($ch);
       </div>
     </nav>
 
-    <section class="grave-booking-landing">
-      <div
-        class="card text-white bg-dark mb-3 border-secondary"
-        style="max-width: 90%"
-      >
+    <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "htdb";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+} 
+
+// Fetch SectionCode from URL (assuming it's passed as a query parameter)
+if(isset($_GET['selected_section'])) {
+  $sectionCode = $conn->real_escape_string($_GET['selected_section']);
+  // Fetch rows data based on SectionCode
+  $sql = "SELECT DISTINCT RowID FROM `rows` WHERE SectionCode = '$sectionCode'";
+  $result = $conn->query($sql);
+  if (!$result) {
+    die("Error fetching rows: " . $conn->error);
+  }
+}
+
+// Fetch GraveNum based on selected RowID
+if(isset($_GET['selected_row'])) {
+    $selectedRow = $_GET['selected_row'];
+    $graveQuery = "SELECT GraveNum FROM grave WHERE RowID = '$selectedRow'";
+    // Execute query and fetch results
+    $graveResult = $conn->query($graveQuery);
+    if ($graveResult && $graveResult->num_rows > 0) {
+        while($graveRow = $graveResult->fetch_assoc()) {
+            echo "<li>" . $graveRow['GraveNum'] . "</li>";
+        }
+    } else {
+        echo "<li>No graves available</li>";
+    }
+}
+// Fetch SectionCode from URL (assuming it's passed as a query parameter)
+if(isset($_GET['selected_section'])) {
+  $sectionCode = $conn->real_escape_string($_GET['selected_section']);
+  
+  // Fetch section data including SVG based on SectionCode
+  $sectionQuery = "SELECT SectionSvg FROM grave_sections WHERE SectionCode = '$sectionCode'";
+  $sectionResult = $conn->query($sectionQuery);
+  if (!$sectionResult) {
+    die("Error fetching section data: " . $conn->error);
+  }
+  
+  // Extract SVG data
+  $sectionSvg = '';
+  if ($sectionResult->num_rows > 0) {
+    $sectionData = $sectionResult->fetch_assoc();
+    $sectionSvg = $sectionData['SectionSvg'];
+  }
+}
+?>
+
+
+
+<section class="grave-booking-landing">
+    <div class="card text-white bg-dark mb-3 border-secondary" style="max-width: 90%">
         <div class="card-header border-secondary" style="font-size: 2em">
-          Payment For Graves
+            Payment For Graves
         </div>
         <div class="card-body">
-          <div class="wrapper">
-            <form action="https://secure.paygate.co.za/payweb3/process.trans" method="POST">
-              <h4>Account</h4>
-              <div class="input-group">
-                <div class="input-box">
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    required
-                    class="name"
-                  />
-                  <i class="fa fa-user icon"></i>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div class="wrapper">
+                    <h4>Account</h4>
+                    <!-- Display the SectionCode if available in the URL -->
+                
+                    <?php if(isset($sectionCode)): ?>
+                    
+                    <?php endif; ?>
+                    <!-- Other input fields -->
+                    <div class="input-group">
+                        <div class="input-box">
+                            <input type="text" name="buyerName" placeholder="Full Name" required class="name" />
+                            <i class="fa fa-user icon"></i>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-box">
+                            <input id="idNumber" name="idNumber" type="text" placeholder="ID Number" required class="name" />
+                            <i class="fa fa-user icon"></i>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-box">
+                            <input type="email" name="email" placeholder="Email Address (Optional)" class="name" />
+                            <i class="fa fa-envelope icon"></i>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-box">
+                            <input type="tel" name="phoneNumber" placeholder="Phone Number" required class="name" />
+                            <i class="fa fa-phone icon"></i>
+                        </div>
+                    </div>
+                    <h4>Account</h4>
+                    <!-- Dropdown select for RowID -->
+                    <div class="input-group">
+                        <div class="input-box">
+                            <select name="rowID" required>
+                                <option value="">Select Row</option>
+                                <?php if ($result && $result->num_rows > 0): ?>
+                                    <?php while($row = $result->fetch_assoc()): ?>
+                                        <option value="<?php echo $row['RowID']; ?>"><?php echo $row['RowID']; ?></option>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <option value="">No rows available</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Display GraveNum results -->
+                    <ul>
+                        <?php if(isset($graveResult)): ?>
+                            <?php if ($graveResult->num_rows > 0): ?>
+                                <?php while($graveRow = $graveResult->fetch_assoc()): ?>
+                                    <li><?php echo $graveRow['GraveNum']; ?></li>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <li>No graves available</li>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <li>Error fetching graves</li>
+                        <?php endif; ?>
+                    </ul>
+                    <!-- Replace this with your existing input fields -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-              </div>
-
-              <div class="input-group">
-                <div class="input-box">
-                  <input
-                    id="graveNum"
-                    type="number"
-                    oninput="calculateTotal()"
-                    placeholder="Numer of Graves"
-                    required
-                    class="name"
-                  />
-                  <i class="fa fa-user icon"></i>
-                </div>
-              </div>
-
-              <div class="input-group">
-                <div class="input-box">
-                  <input
-                    type="email"
-                    placeholder="Email Adress"
-                    required
-                    class="name"
-                  />
-                  <i class="fa fa-envelope icon"></i>
-                </div>
-              </div>
-
-              <h4>Payment Details</h4>
-
-              <div class="input-group">
-                <div class="input-box">
-                  <input
-                    type="tel"
-                    placeholder="Card Number"
-                    required
-                    class="name"
-                  />
-                  <i class="fa fa-credit-card icon"></i>
-                </div>
-              </div>
-              <div class="input-group">
-                <div class="input-box">
-                  <input
-                    type="tel"
-                    placeholder="Card CVC"
-                    required
-                    class="name"
-                  />
-                  <i class="fa fa-user icon"></i>
-                </div>
-                <div class="input-box">
-                  <select>
-                    <option>January</option>
-                    <option>February</option>
-                    <option>March</option>
-                    <option>April</option>
-                    <option>May</option>
-                    <option>June</option>
-                    <option>July</option>
-                    <option>August</option>
-                    <option>September</option>
-                    <option>October</option>
-                    <option>November</option>
-                    <option>December</option>
-                  </select>
-                  <select>
-                    <option>2020</option>
-                    <option>2021</option>
-                    <option>2022</option>
-                    <option>2023</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                    <option>2026</option>
-                    <option>2027</option>
-                  </select>
-                </div>
-              </div>
-              <div class="input-group">
-                <div class="input-box">
-                  <button
-                    id="checkoutBtn"
-                    type="button"
-                    class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#exampleModal"
-                  >
-                    PAY NOW
-                  </button>
-                </div>
-              </div>
             </form>
-          </div>
-          <!--end of form-->
-
-          
-
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="exampleModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content bg-dark border-secondary">
-                <div class="modal-header border-secondary">
-                  <h5 class="modal-title" id="exampleModalLabel">
-                    Payment in Process
-                  </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body ">
-                  Payment is in Progress. Come back and look for reply within 24 hours, if no reply is met try again. In the meanwhile, you can select a Service Provider.
-                </div>
-                <div class="modal-footer border-secondary">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="button" class="btn btn-primary">
-                    <a href="serviceProvidersPage.html" style="color:white;">Find Service Provider</a>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-    </section>
+    </div>
+    <?php if(!empty($sectionSvg)): ?>
+                        <div class="svg-container">
+                            <?php echo $sectionSvg; ?>
+                        </div>
+                    <?php endif; ?>
+</section>
+
+
+
+
+
+
     <div>
     <!-- Footer -->
     <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
