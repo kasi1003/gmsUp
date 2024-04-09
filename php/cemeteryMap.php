@@ -59,6 +59,21 @@
             </div>
             
             <?php
+      // Start a session
+session_start();
+
+// Check if the user ID is already set in the session
+if (!isset($_SESSION['UserId'])) {
+    // If not set, generate a new user ID
+    $_SESSION['UserId'] = generateUserId();
+}
+
+// Function to generate a unique user ID
+function generateUserId() {
+    // Use a simple method to generate a unique user ID
+    return 'User_' . uniqid(); // Example format: User_randomUniqueId
+}
+
 // Assuming you have already connected to your database
 $servername = "localhost";
 $username = "root";

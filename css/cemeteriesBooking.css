@@ -84,20 +84,7 @@
   transition: 1s;
 }
 
-.dob {
-  width: 30%;
-  padding: 14px;
-  text-align: center;
-  background-color: #fcfcfc;
-  transition: 0.3s;
-  outline: none;
-  border: 1px solid #c0bfbf;
-  border-radius: 3px;
-}
 
-.radio {
-  display: none;
-}
 
 .input-box label {
   width: 50%;
@@ -118,12 +105,6 @@
 .input-box label:last-of-type {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
-}
-
-.radio:checked + label {
-  background-color: #343a40;
-  color: #fff;
-  transition: 0.5s;
 }
 
 .input-box select {
@@ -185,3 +166,66 @@
 .no-svg-message {
   color: red;
 }
+.card-body-custom {
+  max-width: 80%;
+}
+.grave-box {
+  display: block; /* Ensure it's displayed on its own line */
+}
+.grave-list {
+  margin-top: 20px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.checkbox-item {
+  flex: 1; /* Each item takes up equal space */
+  margin-right: 10px; /* Adjust spacing between items */
+}
+.checkbox-item label {
+  font-size: 16px; /* Adjust font size */
+}
+
+.checkbox-item input[type="checkbox"] {
+  transform: scale(1.5); /* Increase checkbox size */
+  margin-right: 5px; /* Adjust spacing between checkbox and label */
+}
+/* CSS for row buttons */
+.row-button {
+  flex: 0 0 calc(33.333% - 10px); /* Each button takes up 33.333% of the container width minus margin */
+  margin: 5px; /* Margin between buttons */
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+/* Style for the button */
+.row-button button {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.row-button button:hover {
+  background-color: #0056b3;
+}
+/* CSS for row buttons container */
+.row-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Adjust alignment as needed */
+  margin-bottom: 10px; /* Add margin between rows */
+}
+.highlighted-button {
+  background-color: #ffc107; /* Change to the desired highlight color */
+  color: #000; 
+}
+
