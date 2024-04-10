@@ -7,23 +7,23 @@ $dbname = "htdb";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Start a session
 session_start();
 
-// Check if the user ID is already set in the session
-if (!isset($_SESSION['UserId'])) {
-    // If not set, generate a new user ID
-    $_SESSION['UserId'] = generateUserId();
-}
+// Set UserId to PHPSESSID
+$_SESSION['UserId'] = session_id();
+
+// Now $_SESSION['UserId'] holds the same value as PHPSESSID
 
 // Function to generate a unique user ID
 function generateUserId() {
     // Use a simple method to generate a unique user ID
     return 'User_' . uniqid(); // Example format: User_randomUniqueId
 }
+
 
 
 // Retrieve the region parameter from the URL

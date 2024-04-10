@@ -2,11 +2,8 @@
 // Start or resume the session
 session_start();
 
-// Check if the user is already logged in
-if (!isset($_SESSION['UserId'])) {
-    // If not logged in, generate a new user ID and store it in the session
-    $_SESSION['UserId'] = uniqid();
-}
+// Get the session ID
+$user_id = session_id();
 
 $servername = "localhost";
 $username = "root";
@@ -37,8 +34,9 @@ $conn->close();
 
 // Return the service provider names along with the user ID as JSON
 $response = array(
-    'UserId' => $_SESSION['UserId'],
+    'UserId' => $user_id,
     'service_providers' => $providers
 );
 echo json_encode($response);
+
 ?>
