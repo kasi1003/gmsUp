@@ -129,16 +129,17 @@ if (isset($_GET['cemetery_name'])) {
             echo '<p class="section-type">' . $rowSection['SectionType'] . '</p>';
             echo $rowSection['SectionSvg']; // Assuming SectionSvg contains the SVG data
 
-            // Fetch the number of available graves for this section from the rows table
-            $sectionCode = $rowSection['SectionCode'];
-            $queryAvailableGraves = "SELECT SUM(AvailableGraves) AS AvailableGraves FROM `rows` WHERE SectionCode = ?";
-            $stmt = $conn->prepare($queryAvailableGraves);
-            $stmt->bind_param("s", $sectionCode);
-            $stmt->execute();
-            $resultAvailableGraves = $stmt->get_result();
-            $rowAvailableGraves = $resultAvailableGraves->fetch_assoc();
+            // Fetch the number of available graves for this section from the grave table
+$sectionCode = $rowSection['SectionCode'];
+$queryAvailableGraves = "SELECT COUNT(*) AS AvailableGraves FROM `grave` WHERE SectionCode = ? AND GraveStatus IS NULL";
+$stmt = $conn->prepare($queryAvailableGraves);
+$stmt->bind_param("s", $sectionCode);
+$stmt->execute();
+$resultAvailableGraves = $stmt->get_result();
+$rowAvailableGraves = $resultAvailableGraves->fetch_assoc();
 
-            echo '<p class="available-graves">Available Graves: ' . $rowAvailableGraves['AvailableGraves'] . '</p>';
+echo '<p class="available-graves">Available Graves: ' . $rowAvailableGraves['AvailableGraves'] . '</p>';
+
 
             echo '</a>';
             echo '</div>';
