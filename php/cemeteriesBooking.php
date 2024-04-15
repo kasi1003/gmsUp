@@ -184,12 +184,16 @@ if(isset($_GET['selected_section'])) {
         </div>
 
         <button type="button" onclick="navigateToServiceProvidersPage()" class="btn btn-primary">Continue</button>
-
+        <button type="button" onclick="navigateQuotation()" class="btn btn-primary">Quotation</button>
 <script>
     // Function to navigate to serviceProvidersPage.php
     function navigateToServiceProvidersPage() {
         // Redirect to serviceProvidersPage.php
-        window.location.href = "serviceProvidersPage.php";
+        window.location.href = "../html/serviceProvidersPage.html";
+    }
+    function navigateQuotation() {
+        // Redirect to servicequotationPage.php
+        window.location.href = "quotations.php";
     }
 </script>
 
