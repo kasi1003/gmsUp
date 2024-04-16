@@ -199,50 +199,72 @@
             </div>
           </div>
 
-          <div class="col-12 col-lg-3">
-            <div class="card custom-card-style border-secondary bg-dark mt-5">
-              <div class="card-header border-secondary">
-                <h1 style="font-size: 2em; color: white">Find a Loved One</h1>
-              </div>
-              <div class="card-body text-secondary">
-                <form class="search-form">
-                  <div class="form-group">
-                    <label for="fullName">Full Name:</label>
-                    <input
-                      type="text"
-                      id="fullName"
-                      name="fullName"
-                      class="form-control"
-                      placeholder="Enter full name"
-                      required
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="deathNumber">Death Number:</label>
-                    <input
-                      type="text"
-                      id="deathNumber"
-                      name="deathNumber"
-                      class="form-control"
-                      placeholder="Enter death number"
-                      required
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    style="width: 100%"
-                  >
-                    Search
-                  </button>
-                  <div class="results"></div>
-                </form>
-              </div>
+    <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-6">
+      <div class="card custom-card-style border-secondary bg-dark mt-5">
+        <div class="card-header border-secondary">
+          <h1 style="font-size: 2em; color: white">Find Burial Records</h1>
+        </div>
+        <div class="card-body text-secondary">
+          <form id="burialRecordsForm">
+            <div class="form-group">
+              <label for="searchInput">Enter Buried Person's Name or Death Code:</label>
+              <input type="text" id="searchInput" name="searchInput" class="form-control" placeholder="Enter name or death code" required>
             </div>
-          </div>
+          </form>
+          <div class="results mt-3"></div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</div>
+
+<script>
+    function search() {
+        var input = document.getElementById('searchInput').value.toLowerCase(); // Get the search query
+        var data = []; // This should be your burial data in the format of [{ name: 'John Doe', deathcode: '1234', region: 'Region', ...}, ...]
+
+        // Perform search
+        var results = data.filter(function(burial) {
+            return burial.name.toLowerCase().includes(input) || burial.deathcode.toLowerCase().includes(input);
+        });
+
+        // Display search results
+        displayResults(results);
+    }
+
+    function displayResults(results) {
+        var resultsDiv = document.getElementById('searchResults');
+        resultsDiv.innerHTML = ''; // Clear previous results
+
+        if (results.length === 0) {
+            resultsDiv.innerHTML = 'No results found.';
+            return;
+        }
+
+        // Display each result
+        results.forEach(function(burial) {
+            var resultItem = document.createElement('div');
+            resultItem.innerHTML = `
+                <p>Name: ${burial.name}</p>
+                <p>Deathcode: ${burial.deathcode}</p>
+                <p>Region: ${burial.region}</p>
+                <p>Town: ${burial.town}</p>
+                <p>Cemetery: ${burial.cemetery}</p>
+                <p>Section: ${burial.section}</p>
+                <p>Row ID: ${burial.rowid}</p>
+                <p>Grave Number: ${burial.graveNumber}</p>
+                <hr>
+            `;
+            resultsDiv.appendChild(resultItem);
+        });
+    }
+</script>
+
+
+
+
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <div>
