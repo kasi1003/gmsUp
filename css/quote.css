@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    text-decoration: none;
+  }
+ 
+  
+  /* Media query for responsive design */
+  .custom-button-width{
+    width: 35px;
+    height: 25px;
+    position: relative;
+  }
+  .custom-button-width i {
+    position: absolute;
+    left: 10px; /* Adjust the left positioning as needed */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .topSection{
+    display: flex;
+    justify-content: center;
+    background-color: #343a40;
+    min-height: 1em;
+    width: 100%;
+  }
+  
+  .service-providers-header-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    
+  }
+  .service-providers-subheading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  
+  }
+  
+  .img-container{
+    width: 100%; /* Adjust the width and height as needed */
+    height: 10em;
+    background:rgb(255, 255, 255);
+    background-size: cover; /* This ensures the image covers the entire div */
+    background-position: center top; /* Center the image within the div */
+
+  }
+  
+  .towns-container {
+    text-align: center; /* Center align town names */
+    display: flex; /* Use flexbox to create a flexible layout */
+    flex-wrap: wrap; /* Allow towns to wrap to the next row */
+    justify-content: flex-start; /* Align towns to start at the same position */
+}
+.town {
+    text-align: center; /* Center align town name */
+    margin: 0 20px 20px 0; /* Add margin between towns for horizontal spacing */
+    width: calc(33.33% - 20px); /* Adjust the width for 3 towns in a row */
+}
+.cemeteries-container {
+    padding: 10px; /* Add padding for spacing */
+    text-align: center; /* Center align buttons */
+    margin-top: 10px; /* Add some space between towns and cemeteries */
+    
+}
+.cemetery-button {
+    display: block;
+    width: 100%; /* Adjust the width as needed */
+    padding: 5px;
+    margin-bottom: 5px; /* Add margin between buttons */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+  
