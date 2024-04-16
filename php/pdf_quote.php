@@ -205,11 +205,6 @@ $html .= '<p style="font-size: 15px; text-align: right; padding-right: 20px; fon
 $pdf->writeHTML($html, true, false, true, false, '');
 
 
-
-
-
-
-
 // Close PDF document
 $pdfContent = $pdf->Output('GMS-Quotation.pdf', 'S');
 
