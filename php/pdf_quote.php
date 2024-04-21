@@ -9,7 +9,8 @@ require_once('../tcpdf/tcpdf.php');
 session_start();
 
 // Function to retrieve the user ID from the session
-function getUserIdFromSession() {
+function getUserIdFromSession()
+{
     // Check if the user ID is set in the session
     if (isset($_SESSION['UserId'])) {
         // Retrieve the user ID from the session
@@ -30,7 +31,7 @@ $user_id = getUserIdFromSession();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "htdb"; 
+$dbname = "htdb";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -145,6 +146,7 @@ $html .= '<div style="margin-left: auto;">' . $buyerInfoHTML . '</div>';
 $html .= '</div>';
 
 // Check if there are any orders for the user
+// Check if there are any orders for the user
 if ($result && mysqli_num_rows($result) > 0) {
     // Initialize HTML content for orders table
     $htmlOrders = '<table border="1" cellpadding="5" cellspacing="0" style="margin-top: 20px;">'; // Adjust margin-top as needed
@@ -168,15 +170,46 @@ if ($result && mysqli_num_rows($result) > 0) {
         // Add the order row to the HTML content
         $htmlOrders .= '<tr>';
         $htmlOrders .= '<td style="width: 70%; font-size: 10px;">' . $description . '</td>'; // Adjust width for description column
-        $htmlOrders .= '<td style="width: 30%; font-size: 10px;">Dummy Amount</td>'; // Adjust width for amount column
+        $htmlOrders .= '<td style="width: 30%; font-size: 10px;">' . $serviceData['Price'] . '</td>'; // Adjust width for amount column
         $htmlOrders .= '</tr>';
     }
 
     // Close the orders table
     $htmlOrders .= '</table>';
 
-    // Append orders table HTML to the main HTML content
+    // Initialize HTML content for ordered services table
+    $htmlOrderedServices = '<h2>Ordered Services</h2>';
+    $htmlOrderedServices .= '<table border="1" cellpadding="5" cellspacing="0" style="margin-top: 20px;">';
+    $htmlOrderedServices .= '<tr style="background-color: #5482C4; color: white;">';
+    $htmlOrderedServices .= '<th style="text-align: center;">Service Name</th>';
+    $htmlOrderedServices .= '<th style="text-align: center;">Description</th>';
+    $htmlOrderedServices .= '<th style="text-align: center;">Price</th>';
+    $htmlOrderedServices .= '</tr>';
+
+    // Loop through each ordered service and add it to the HTML content
+    mysqli_data_seek($result, 0); // Reset the result pointer
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Fetch service details from the services table using ServiceId
+        $serviceId = $row['ServiceId'];
+        $serviceQuery = "SELECT ServiceName, Description, Price FROM services WHERE id = '$serviceId'";
+        $serviceResult = mysqli_query($conn, $serviceQuery);
+        $serviceData = mysqli_fetch_assoc($serviceResult);
+
+        // Add the ordered service row to the HTML content
+        $htmlOrderedServices .= '<tr>';
+        $htmlOrderedServices .= '<td style="text-align: left;">' . $serviceData['ServiceName'] . '</td>';
+        $htmlOrderedServices .= '<td style="text-align: left;">' . $serviceData['Description'] . '</td>';
+        $htmlOrderedServices .= '<td style="text-align: right;">' . $serviceData['Price'] . '</td>';
+        $htmlOrderedServices .= '</tr>';
+    }
+
+    // Close the ordered services table
+    $htmlOrderedServices .= '</table>';
+
+    // Append ordered services and orders HTML to the main HTML content
+    $html .= $htmlOrderedServices;
     $html .= $htmlOrders;
+}
 
     // Get the latest order
     mysqli_data_seek($result, 0); // Reset the result pointer
@@ -190,16 +223,15 @@ if ($result && mysqli_num_rows($result) > 0) {
     $html .= '<p style="font-size: 10px; text-align: center;">Quotation expires on: ' . $expirationDate . '</p>';
 
     $subtotal_formatted = number_format($subtotal, 2);
-$vat_total_formatted = number_format($vat_total, 2);
-$grand_total_formatted = number_format($grand_total, 2);
+    $vat_total_formatted = number_format($vat_total, 2);
+    $grand_total_formatted = number_format($grand_total, 2);
 
-$html .= '<p style="font-size: 15px; text-align: right; padding-right: 20px;">Sub Total: N$' . $subtotal_formatted . '</p>'; // Display Subtotal
-$html .= '<p style="font-size: 15px; text-align: right; padding-right: 20px;">VAT 15%: N$' . $vat_total_formatted . '</p>'; // Display VAT total
-$html .= '<p style="font-size: 15px; text-align: right; padding-right: 20px; font-weight: bold;">Total: N$' . $grand_total_formatted . '</p>'; // Display Grand Total
+    $html .= '<p style="font-size: 15px; text-align: right; padding-right: 20px;">Sub Total: N$' . $subtotal_formatted . '</p>'; // Display Subtotal
+    $html .= '<p style="font-size: 15px; text-align: right; padding-right: 20px;">VAT 15%: N$' . $vat_total_formatted . '</p>'; // Display VAT total
+    $html .= '<p style="font-size: 15px; text-align: right; padding-right: 20px; font-weight: bold;">Total: N$' . $grand_total_formatted . '</p>'; // Display Grand Total
 
 
 
-}
 
 // Print HTML content to PDF
 $pdf->writeHTML($html, true, false, true, false, '');
@@ -214,4 +246,3 @@ ob_end_clean();
 // Send PDF file to browser
 header('Content-Type: application/pdf');
 echo $pdfContent;
-?>

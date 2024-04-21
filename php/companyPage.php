@@ -107,9 +107,17 @@
       <div class="container">
         <div class="row">
           <?php
+          session_start();
           // Step 1: Extract the service provider name from the URL
           $service_provider_name = $_GET['service_provider_name'];
-
+          // Step 2: Retrieve the UserId from the session or generate a new one if not available
+          if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+          } else {
+            // Generate a unique random user id
+            $user_id = uniqid();
+            $_SESSION['user_id'] = $user_id; // Store the user id in the session
+          }
           // Step 2: Retrieve the corresponding ID from the service_providers table
           // Establish a connection to your database (Replace the values with your actual database credentials)
           $servername = "localhost";
@@ -132,11 +140,11 @@
 
             if ($selected == '1') {
               // Check if the record already exists in ordered_services
-              $sql_check_existence = "SELECT * FROM ordered_services WHERE ServiceId = $serviceId";
+              $sql_check_existence = "SELECT * FROM ordered_services WHERE ServiceId = $serviceId AND UserId = '$user_id'";
               $result_check_existence = $conn->query($sql_check_existence);
               if ($result_check_existence->num_rows == 0) {
                 // If the record does not exist, insert it into the ordered_services table
-                $sql_insert = "INSERT INTO ordered_services (ServiceId) VALUES ($serviceId)";
+                $sql_insert = "INSERT INTO ordered_services (ServiceId, UserId) VALUES ($serviceId, '$user_id')";
                 if ($conn->query($sql_insert) === TRUE) {
                   echo "Service with ID $serviceId added to ordered_services.";
                 } else {
@@ -145,7 +153,7 @@
               }
             } else {
               // If the button is toggled off, delete the record from the ordered_services table
-              $sql_delete = "DELETE FROM ordered_services WHERE ServiceId = $serviceId";
+              $sql_delete = "DELETE FROM ordered_services WHERE ServiceId = $serviceId AND UserId = '$user_id'";
               if ($conn->query($sql_delete) === TRUE) {
                 echo "Service with ID $serviceId removed from ordered_services.";
               } else {
@@ -196,9 +204,6 @@
               echo "Provider not found.";
             }
           }
-
-
-
           // Close the connection
           $conn->close();
           ?>
@@ -242,7 +247,7 @@
         <br>
         <div style="text-align: center;">
           <a href="#" class="btn btn-primary" id="confirm-button">Confirm</a>
-          <a href="#" class="btn btn-primary" id="confirm-button">View Quotation</a>
+          <a href="pdf_quote.php" class="btn btn-primary" id="confirm-button">View Quotation</a>
 
         </div>
         <br>
