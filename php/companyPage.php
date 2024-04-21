@@ -125,56 +125,125 @@
             die("Connection failed: " . $conn->connect_error);
           }
 
-          // Prepare the query
-          $sql_provider_id = "SELECT id FROM service_providers WHERE Name = '$service_provider_name'";
+          // Check if the request is a POST request (for updating ordered_services)
+          if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['service_id']) && isset($_POST['selected'])) {
+            $serviceId = $_POST['service_id'];
+            $selected = $_POST['selected'];
 
-          // Execute the query
-          $result_provider_id = $conn->query($sql_provider_id);
-
-          // Check if the query was successful
-          if ($result_provider_id->num_rows > 0) {
-            // Fetch the result
-            $row_provider_id = $result_provider_id->fetch_assoc();
-            $provider_id = $row_provider_id['id'];
-
-            // Step 3: Fetch records from the services table with the same ProviderId
-            // Prepare the query
-            $sql_services = "SELECT * FROM services WHERE ProviderId = $provider_id";
-
-            // Execute the query
-            $result_services = $conn->query($sql_services);
-
-            // Check if there are any records
-            if ($result_services->num_rows > 0) {
-              // Step 4: Display each fetched record in its own card
-              while ($service = $result_services->fetch_assoc()) {
-                echo '<div class="col-sm">';
-                echo '  <section class="block1">';
-                echo '    <div class="card" style="width: 18rem;">';
-                echo '      <div class="card-body">';
-                echo '        <h5 class="SERVICE">' . $service['ServiceName'] . '</h5>';
-                echo '        <p class="card-text">' . $service['Description'] . '</p>';
-                echo '        <p class="card-text">Price: ' . $service['Price'] . '</p>'; // Adding Price
-                echo '        <a href="#" class="btn btn-primary select-service" data-service-id="' . $service['id'] . '">Select</a>';
-                echo '      </div>';
-                echo '    </div>';
-                echo '  </section>';
-                echo '</div>';
+            if ($selected == '1') {
+              // Check if the record already exists in ordered_services
+              $sql_check_existence = "SELECT * FROM ordered_services WHERE ServiceId = $serviceId";
+              $result_check_existence = $conn->query($sql_check_existence);
+              if ($result_check_existence->num_rows == 0) {
+                // If the record does not exist, insert it into the ordered_services table
+                $sql_insert = "INSERT INTO ordered_services (ServiceId) VALUES ($serviceId)";
+                if ($conn->query($sql_insert) === TRUE) {
+                  echo "Service with ID $serviceId added to ordered_services.";
+                } else {
+                  echo "Error adding service to ordered_services: " . $conn->error;
+                }
               }
             } else {
-              echo "No services found for the provider.";
+              // If the button is toggled off, delete the record from the ordered_services table
+              $sql_delete = "DELETE FROM ordered_services WHERE ServiceId = $serviceId";
+              if ($conn->query($sql_delete) === TRUE) {
+                echo "Service with ID $serviceId removed from ordered_services.";
+              } else {
+                echo "Error removing service from ordered_services: " . $conn->error;
+              }
             }
           } else {
-            echo "Provider not found.";
+            // Prepare the query
+            $sql_provider_id = "SELECT id FROM service_providers WHERE Name = '$service_provider_name'";
+
+            // Execute the query
+            $result_provider_id = $conn->query($sql_provider_id);
+
+            // Check if the query was successful
+            if ($result_provider_id->num_rows > 0) {
+              // Fetch the result
+              $row_provider_id = $result_provider_id->fetch_assoc();
+              $provider_id = $row_provider_id['id'];
+
+              // Step 3: Fetch records from the services table with the same ProviderId
+              // Prepare the query
+              $sql_services = "SELECT * FROM services WHERE ProviderId = $provider_id";
+
+              // Execute the query
+              $result_services = $conn->query($sql_services);
+
+              // Check if there are any records
+              if ($result_services->num_rows > 0) {
+                // Step 4: Display each fetched record in its own card
+                while ($service = $result_services->fetch_assoc()) {
+                  echo '<div class="col-sm">';
+                  echo '  <section class="block1">';
+                  echo '    <div class="card" style="width: 18rem;">';
+                  echo '      <div class="card-body">';
+                  echo '        <h5 class="SERVICE">' . $service['ServiceName'] . '</h5>';
+                  echo '        <p class="card-text">' . $service['Description'] . '</p>';
+                  echo '        <p class="card-text">Price: ' . $service['Price'] . '</p>'; // Adding Price
+                  echo '        <a href="#" class="btn btn-primary select-service" data-service-id="' . $service['id'] . '">Select</a>';
+                  echo '      </div>';
+                  echo '    </div>';
+                  echo '  </section>';
+                  echo '</div>';
+                }
+              } else {
+                echo "No services found for the provider.";
+              }
+            } else {
+              echo "Provider not found.";
+            }
           }
+
+
 
           // Close the connection
           $conn->close();
           ?>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              // Add event listeners to all select-service buttons
+              var selectServiceButtons = document.querySelectorAll('.select-service');
+              selectServiceButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                  var serviceId = button.dataset.serviceId;
+                  var selected = !button.classList.contains('selected'); // Toggle the selected state
+                  updateOrderedServices(serviceId, selected);
+                });
+              });
+
+              function updateOrderedServices(serviceId, selected) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                  if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                      console.log(xhr.responseText);
+                      // Update the button's appearance based on the selected state
+                      var button = document.querySelector('[data-service-id="' + serviceId + '"]');
+                      if (selected) {
+                        button.classList.add('selected');
+                      } else {
+                        button.classList.remove('selected');
+                      }
+                    } else {
+                      console.error('Error:', xhr.status);
+                    }
+                  }
+                };
+                xhr.open('POST', '<?php echo $_SERVER["PHP_SELF"]; ?>', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('service_id=' + serviceId + '&selected=' + (selected ? '1' : '0'));
+              }
+            });
+          </script>
         </div>
         <br>
         <div style="text-align: center;">
           <a href="#" class="btn btn-primary" id="confirm-button">Confirm</a>
+          <a href="#" class="btn btn-primary" id="confirm-button">View Quotation</a>
+
         </div>
         <br>
       </div>
@@ -182,13 +251,13 @@
   </section>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Select buttons
       const selectButtons = document.querySelectorAll('.select-service');
 
       // Add click event listeners to select buttons
       selectButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
+        button.addEventListener('click', function(event) {
           event.preventDefault();
           // Toggle 'selected' class for the clicked button
           this.classList.toggle('selected');
@@ -206,7 +275,7 @@
       const confirmButton = document.getElementById('confirm-button');
 
       // Add click event listener to confirm button
-      confirmButton.addEventListener('click', function (event) {
+      confirmButton.addEventListener('click', function(event) {
         event.preventDefault();
         const selectedServices = document.querySelectorAll('.select-service.selected');
         const providerEmail = "<?php echo $email ?? 'simeonalfeus078@gmail.com'; ?>"; // Updated to ensure email comes from simeonalfeus21@gmail.com
@@ -226,7 +295,7 @@
 
           // Send AJAX request to PHP script to send email
           const xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function () {
+          xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
               if (xhr.status === 200) {
                 alert('Selection confirmed. Email sent to provider.');
