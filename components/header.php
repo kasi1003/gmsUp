@@ -30,7 +30,7 @@
     echo '<div class="collapse navbar-collapse" id="navbarNav">';
     echo '<ul class="navbar-nav">';
     echo '<li class="nav-item">';
-    echo '<a class="nav-link" href="../html/index.html">Home</a>';
+    echo '<a class="nav-link" href="../php/index.php">Home</a>';
     echo '</li>';
     echo '<li class="nav-item dropdown">';
     echo '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Service Providers</a>';

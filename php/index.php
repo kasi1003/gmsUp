@@ -25,7 +25,6 @@ $conn->close();
 // Return the service provider names along with the user ID as JSON
 $response = array(
     'UserId' => $user_id,
-    'service_providers' => $providers
 );
 
 ?>
