@@ -13,31 +13,9 @@
 </head>
 
 <body>
-  <!--navbar-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="service-providers-page.html" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Service Providers
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="avbobPage.html">AVBOB</a>
-            <a class="dropdown-item" href="service-providers-page.html">View More</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="cemeteries.html">Buy a Grave</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+<?php
+    include '../components/header.php'; // or include_once if you want to ensure it's included only once
+    ?>
 
   <!--first section-->
   <section class="funeral-services">
@@ -111,12 +89,13 @@
           // Step 1: Extract the service provider name from the URL
           $service_provider_name = $_GET['service_provider_name'];
           // Step 2: Retrieve the UserId from the session or generate a new one if not available
-          if (isset($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
+          // Step 1: Retrieve the UserId from the session
+          if (isset($_SESSION['UserId'])) {
+            $user_id = $_SESSION['UserId'];
           } else {
-            // Generate a unique random user id
-            $user_id = uniqid();
-            $_SESSION['user_id'] = $user_id; // Store the user id in the session
+            // Handle the case if UserId is not set
+            // You might want to generate a new UserId or handle it differently based on your application logic
+            die("UserId not found in session");
           }
           // Step 2: Retrieve the corresponding ID from the service_providers table
           // Establish a connection to your database (Replace the values with your actual database credentials)
@@ -318,6 +297,11 @@
       });
     });
   </script>
+   <!-- Footer -->
+   <?php
+        include '../components/footer.php'; // or include_once if you want to ensure it's included only once
+        ?>
+        <!-- Footer -->
 
   <!--review section-->
 
