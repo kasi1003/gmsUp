@@ -18,43 +18,44 @@
 
   <section class="cemetery-map-section">
     <div class="card text-white bg-dark mb-3 border-secondary" style="width: 80%; margin: 2em; height: auto;">
-        <div class="card-header border-secondary" style="font-size: 3em; display:width 80%; justify-content: center;">
-            <?php
-            if (isset($_GET['cemetery_name'])) {
-                echo htmlspecialchars($_GET['cemetery_name']);
-            } else {
-                echo "Cemetery Name Not Found";
-            }
-            ?>
+      <div class="card-header border-secondary" style="font-size: 3em; display:width 80%; justify-content: center;">
+        <?php
+        if (isset($_GET['cemetery_name'])) {
+          echo htmlspecialchars($_GET['cemetery_name']);
+        } else {
+          echo "Cemetery Name Not Found";
+        }
+        ?>
+      </div>
+      <div class="card-body" style="padding-bottom: 20em;">
+        <div class="cemetery-svg-container">
+          <?php
+          // Assuming you have already connected to your database
+          // Output the cemetery SVG map here
+          ?>
         </div>
-        <div class="card-body" style="padding-bottom: 20em;">
-            <div class="cemetery-svg-container">
-                <?php
-                // Assuming you have already connected to your database
-                // Output the cemetery SVG map here
-                ?>
-            </div>
-            
-            <?php
-      // Start a session
-session_start();
 
-// Set UserId to PHPSESSID
-$_SESSION['UserId'] = session_id();
+        <?php
+        // Start a session
+        session_start();
 
-// Now $_SESSION['UserId'] holds the same value as PHPSESSID
+        // Set UserId to PHPSESSID
+        $_SESSION['UserId'] = session_id();
 
-// Function to generate a unique user ID
-function generateUserId() {
-    // Use a simple method to generate a unique user ID
-    return 'User_' . uniqid(); // Example format: User_randomUniqueId
-}
+        // Now $_SESSION['UserId'] holds the same value as PHPSESSID
 
-// Assuming you have already connected to your database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "htdb";
+        // Function to generate a unique user ID
+        function generateUserId()
+        {
+          // Use a simple method to generate a unique user ID
+          return 'User_' . uniqid(); // Example format: User_randomUniqueId
+        }
+
+        // Assuming you have already connected to your database
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "htdb";
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -105,16 +106,16 @@ $dbname = "htdb";
               echo '<p class="section-type">' . $rowSection['SectionType'] . '</p>';
               echo $rowSection['SectionSvg']; // Assuming SectionSvg contains the SVG data
 
-            // Fetch the number of available graves for this section from the grave table
-$sectionCode = $rowSection['SectionCode'];
-$queryAvailableGraves = "SELECT COUNT(*) AS AvailableGraves FROM `grave` WHERE SectionCode = ? AND GraveStatus IS NULL";
-$stmt = $conn->prepare($queryAvailableGraves);
-$stmt->bind_param("s", $sectionCode);
-$stmt->execute();
-$resultAvailableGraves = $stmt->get_result();
-$rowAvailableGraves = $resultAvailableGraves->fetch_assoc();
+              // Fetch the number of available graves for this section from the grave table
+              $sectionCode = $rowSection['SectionCode'];
+              $queryAvailableGraves = "SELECT COUNT(*) AS AvailableGraves FROM `grave` WHERE SectionCode = ? AND GraveStatus IS NULL";
+              $stmt = $conn->prepare($queryAvailableGraves);
+              $stmt->bind_param("s", $sectionCode);
+              $stmt->execute();
+              $resultAvailableGraves = $stmt->get_result();
+              $rowAvailableGraves = $resultAvailableGraves->fetch_assoc();
 
-echo '<p class="available-graves">Available Graves: ' . $rowAvailableGraves['AvailableGraves'] . '</p>';
+              echo '<p class="available-graves">Available Graves: ' . $rowAvailableGraves['AvailableGraves'] . '</p>';
 
 
               echo '</a>';

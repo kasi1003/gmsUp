@@ -7,7 +7,7 @@ $dbname = "htdb";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+  die("Connection failed: " . $conn->connect_error);
 }
 
 // Start a session
@@ -19,9 +19,10 @@ $_SESSION['UserId'] = session_id();
 // Now $_SESSION['UserId'] holds the same value as PHPSESSID
 
 // Function to generate a unique user ID
-function generateUserId() {
-    // Use a simple method to generate a unique user ID
-    return 'User_' . uniqid(); // Example format: User_randomUniqueId
+function generateUserId()
+{
+  // Use a simple method to generate a unique user ID
+  return 'User_' . uniqid(); // Example format: User_randomUniqueId
 }
 
 
@@ -63,6 +64,17 @@ $region = $_GET["region"];
         </div>
 
         <?php
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "htdb";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+
         // Query the regions table for the region ID based on the region name
         $sqlRegion = "SELECT region_id FROM regions WHERE name = ?";
         $stmtRegion = $conn->prepare($sqlRegion);
