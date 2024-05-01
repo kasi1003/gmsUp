@@ -179,7 +179,7 @@
                 // Function to navigate to serviceProvidersPage.php
                 function navigateToServiceProvidersPage() {
                     // Redirect to serviceProvidersPage.php
-                    window.location.href = "../html/serviceProvidersPage.html";
+                    window.location.href = "../php/serviceProvidersPage.php";
                 }
 
                 function navigateQuotation() {

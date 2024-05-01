@@ -24,8 +24,7 @@ $(document).ready(function () {
 
     // Create the "View More" link and append it to the dropdown menu
     var viewMoreLink = $("<a>")
-      .attr("href", "../html/serviceProvidersPage.html") // Set href to "#" for now
-      .addClass("dropdown-item view-more") // Add the "view-more" class
+          cv      .addClass("dropdown-item view-more") // Add the "view-more" class
       .text("View More");
 
     dropdownMenu.append(viewMoreLink);

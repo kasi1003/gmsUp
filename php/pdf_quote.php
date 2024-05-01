@@ -5,27 +5,8 @@ ob_start();
 // Include the main TCPDF library (search for installation path).
 require_once('../tcpdf/tcpdf.php');
 
-// Start the session
-session_start();
 
-// Function to retrieve the user ID from the session
-function getUserIdFromSession()
-{
-    // Check if the user ID is set in the session
-    if (isset($_SESSION['UserId'])) {
-        // Retrieve the user ID from the session
-        return $_SESSION['UserId'];
-    } else {
-        // Handle the case when UserId is not set
-        // You may choose to handle this case based on your application's logic
-        // For example, you can redirect the user to the login page
-        // Terminate script execution and display an error message
-        die("User ID not found.");
-    }
-}
 
-// Retrieve the user ID from the session
-$user_id = getUserIdFromSession();
 
 // Database connection parameters
 $servername = "localhost";
