@@ -22,7 +22,17 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+session_start();
 
+// Step 2: Retrieve the UserId from the session or generate a new one if not available
+// Step 1: Retrieve the UserId from the session
+if (isset($_SESSION['UserId'])) {
+    $user_id = $_SESSION['UserId'];
+} else {
+    // Handle the case if UserId is not set
+    // You might want to generate a new UserId or handle it differently based on your application logic
+    die("UserId not found in session");
+}
 
 // Include TCPDF library
 require_once('../tcpdf/tcpdf.php');
@@ -57,6 +67,7 @@ $html .= '<div><br></div>';
 // Start building HTML content
 $html = '<div></div>';
 
+
 // Query to retrieve data from the orders table
 $queryOrders = "SELECT CemeteryID, SectionCode, RowID, GraveNum, BuyerName, Email
                 FROM orders
@@ -65,16 +76,6 @@ $stmtOrders = $conn->prepare($queryOrders);
 $stmtOrders->bind_param("s", $user_id);
 $stmtOrders->execute();
 $resultOrders = $stmtOrders->get_result();
-
-// Query to retrieve data from the ordered_services table
-$queryOrderedServices = "SELECT os.ServiceId, s.ServiceName, s.Price, s.ProviderId
-                         FROM ordered_services os
-                         INNER JOIN services s ON os.ServiceId = s.id
-                         WHERE os.id IN (SELECT id FROM orders WHERE UserId = ?)";
-$stmtOrderedServices = $conn->prepare($queryOrderedServices);
-$stmtOrderedServices->bind_param("s", $user_id);
-$stmtOrderedServices->execute();
-$resultOrderedServices = $stmtOrderedServices->get_result();
 
 // Store HTML content in a variable
 $html .= "<h2>Ordered Graves</h2>";
@@ -94,6 +95,18 @@ while ($rowOrders = $resultOrders->fetch_assoc()) {
 }
 $html .= "</table>";
 
+// Query to retrieve data from the ordered_services table
+$queryOrderedServices = "SELECT os.ServiceId, s.ServiceName, s.Price, s.ProviderId
+                         FROM ordered_services os
+                         INNER JOIN services s ON os.ServiceId = s.id
+                         WHERE os.UserId = ?";
+
+$stmtOrderedServices = $conn->prepare($queryOrderedServices);
+$stmtOrderedServices->bind_param("s", $user_id);
+$stmtOrderedServices->execute();
+$resultOrderedServices = $stmtOrderedServices->get_result();
+
+// Store HTML content in a variable
 $html .= "<h2>Ordered Services</h2>";
 $html .= "<table>";
 $html .= '<tr style="background-color: #007bff; color: #ffffff;">';
@@ -106,9 +119,7 @@ while ($rowOrderedServices = $resultOrderedServices->fetch_assoc()) {
     $html .= "<td>" . $rowOrderedServices['ProviderId'] . "</td>";
     $html .= "</tr>";
 }
-$html .= "</table>";
-
-// Output the PDF content
+$html .= "</table>";// Output the PDF content
 // Create new PDF instance
 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 

@@ -10,20 +10,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Start a session
-session_start();
 
-// Set UserId to PHPSESSID
-$_SESSION['UserId'] = session_id();
-
-// Now $_SESSION['UserId'] holds the same value as PHPSESSID
-
-// Function to generate a unique user ID
-function generateUserId()
-{
-    // Use a simple method to generate a unique user ID
-    return 'User_' . uniqid(); // Example format: User_randomUniqueId
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
