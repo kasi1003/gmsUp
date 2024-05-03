@@ -7,13 +7,15 @@ $(document).ready(function () {
         var tableBody = $("#serviceProvidersTableBody");
 
         // Iterate through the data and dynamically create table rows
-        $.each(data, function (index, provider) {
+        $.each(data, function (index, providers) {
             var row = $("<tr>").attr("id", "clickable-row").css("cursor", "pointer");
             row.append($("<td>").text(index + 1));
-            row.append($("<td>").text(provider.service_provider_name));
-            row.append($("<td>").text(provider.total_burials));
-            row.append($("<td>").text(provider.successful_burials));
-            row.append($("<td>").text(provider.unsuccessful_burials));
+            row.append($("<td>").text(providers.Name));
+            row.append($("<td>").text(providers.Email));
+
+            row.append($("<td>").text(providers.TotalBurials));
+            row.append($("<td>").text(providers.SuccessfulBurials));
+            row.append($("<td>").text(providers.UnsuccessfulBurials));
 
             tableBody.append(row);
         });

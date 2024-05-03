@@ -205,7 +205,7 @@
                 <h1 style="font-size: 2em; color: white">Find a Loved One</h1>
               </div>
               <div class="card-body text-secondary">
-                <form class="search-form">
+                <form class="search-form" id="searchForm">
                   <div class="form-group">
                     <label for="fullName">Full Name:</label>
                     <input
@@ -235,14 +235,34 @@
                   >
                     Search
                   </button>
-                  <div class="results"></div>
+                  <div class="results mt-3"></div>
                 </form>
               </div>
             </div>
           </div>
+          
         </div>
       </div>
     </section>
+
+    <script>
+      document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        searchGrave();
+      });
+    
+      function searchGrave() {
+        var fullName = document.getElementById('fullName').value;
+        var deathNumber = document.getElementById('deathNumber').value;
+    
+        fetch('search_grave.php?fullName=' + fullName + '&deathNumber=' + deathNumber)
+          .then(response => response.text())
+          .then(data => {
+            document.querySelector('.results').innerHTML = data;
+          });
+      }
+    </script>
+
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <div>

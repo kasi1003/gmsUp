@@ -13,13 +13,13 @@ if ($conn->connect_error) {
 }
 
 // Fetch funeral service providers from the database
-$sql = "SELECT service_provider_name FROM service_providers";
+$sql = "SELECT Name FROM service_providers";
 $result = $conn->query($sql);
 
 $providers = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $providers[] = $row['service_provider_name'];
+        $providers[] = $row['Name'];
     }
 }
 
