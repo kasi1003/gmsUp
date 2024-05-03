@@ -1,9 +1,5 @@
 <?php
-// Start or resume the session
-session_start();
 
-// Get the session ID
-$user_id = session_id();
 
 $servername = "localhost";
 $username = "root";
@@ -22,10 +18,7 @@ if ($conn->connect_error) {
 // Close the database connection
 $conn->close();
 
-// Return the service provider names along with the user ID as JSON
-$response = array(
-    'UserId' => $user_id,
-);
+
 
 ?>
 <!DOCTYPE html>

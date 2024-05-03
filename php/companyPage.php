@@ -7,7 +7,7 @@ $dbname = "htdb";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+  die("Connection failed: " . $conn->connect_error);
 }
 
 
@@ -27,9 +27,9 @@ if ($conn->connect_error) {
 </head>
 
 <body>
-<?php
-    include '../components/header.php'; // or include_once if you want to ensure it's included only once
-    ?>
+  <?php
+  include '../components/header.php'; // or include_once if you want to ensure it's included only once
+  ?>
 
   <!--first section-->
   <section class="funeral-services">
@@ -311,11 +311,11 @@ if ($conn->connect_error) {
       });
     });
   </script>
-   <!-- Footer -->
-   <?php
-        include '../components/footer.php'; // or include_once if you want to ensure it's included only once
-        ?>
-        <!-- Footer -->
+  <!-- Footer -->
+  <?php
+  include '../components/footer.php'; // or include_once if you want to ensure it's included only once
+  ?>
+  <!-- Footer -->
 
   <!--review section-->
 
