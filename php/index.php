@@ -97,7 +97,7 @@ $conn->close();
                             <h1 style="font-size: 2em; color: white">Find a Loved One</h1>
                         </div>
                         <div class="card-body text-secondary">
-                            <form class="search-form">
+                            <form class="search-form" id="searchForm">
                                 <div class="form-group">
                                     <label for="fullName">Full Name:</label>
                                     <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Enter full name" required />
@@ -109,11 +109,28 @@ $conn->close();
                                 <button type="submit" class="btn btn-primary" style="width: 100%">
                                     Search
                                 </button>
-                                <div class="results"></div>
+                                <div class="results mt-3"></div>
                             </form>
                         </div>
                     </div>
                 </div>
+                <script>
+                    document.getElementById('searchForm').addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        searchGrave();
+                    });
+
+                    function searchGrave() {
+                        var fullName = document.getElementById('fullName').value;
+                        var deathNumber = document.getElementById('deathNumber').value;
+
+                        fetch('../php/search_grave.php?fullName=' + fullName + '&deathNumber=' + deathNumber)
+                            .then(response => response.text())
+                            .then(data => {
+                                document.querySelector('.results').innerHTML = data;
+                            });
+                    }
+                </script>
             </div>
         </div>
     </section>
