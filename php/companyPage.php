@@ -107,9 +107,17 @@ if ($conn->connect_error) {
           if (isset($_SESSION['UserId'])) {
             $user_id = $_SESSION['UserId'];
           } else {
-            // Handle the case if UserId is not set
-            // You might want to generate a new UserId or handle it differently based on your application logic
-            die("UserId not found in session");
+            // Set UserId to PHPSESSID
+            $_SESSION['UserId'] = session_id();
+
+            // Now $_SESSION['UserId'] holds the same value as PHPSESSID
+
+            // Function to generate a unique user ID
+            function generateUserId()
+            {
+              // Use a simple method to generate a unique user ID
+              return 'User_' . uniqid(); // Example format: User_randomUniqueId
+            }
           }
           // Step 2: Retrieve the corresponding ID from the service_providers table
           // Establish a connection to your database (Replace the values with your actual database credentials)
