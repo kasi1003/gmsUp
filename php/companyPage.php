@@ -312,147 +312,159 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Step 1: Get the service_provider_name from the URL parameter
+        
         $serviceProviderName = $_GET['service_provider_name'];
-
+        
         // Step 2: Query the database to get the id value corresponding to the service_provider_name
         $sql_provider_id = "SELECT id FROM service_providers WHERE Name = '$serviceProviderName'";
         $result_provider_id = $conn->query($sql_provider_id);
-
+        
         // Check if the query was successful
         if ($result_provider_id->num_rows > 0) {
-          // Fetch the result
-          $row_provider_id = $result_provider_id->fetch_assoc();
-          $provider_id = $row_provider_id['id'];
-
-          // Step 3: Fetch records from the reviews table with the same ProviderId
-          // Prepare the query
-          $sql_reviews = "SELECT Name, Review FROM reviews WHERE ProviderId = $provider_id";
-
-          // Execute the query
-          $result_reviews = $conn->query($sql_reviews);
-
-          // Check if there are any records
-          if ($result_reviews->num_rows > 0) {
-            // Display each fetched record in groups of three
-            $reviews = $result_reviews->fetch_all(MYSQLI_ASSOC);
-            $chunks = array_chunk($reviews, 3); // Split reviews into chunks of three
-
-            // Loop through each chunk
-            $active = true; // Variable to track the active carousel item
-            foreach ($chunks as $chunk) {
-              // Start carousel item
-              echo '<div class="carousel-item ';
-              if ($active) {
-                echo 'active'; // Set the first item as active
-                $active = false; // Set active to false for subsequent items
-              }
-              echo '">';
-
-              // Start card wrapper
-              echo '<div class="card-wrapper container-sm d-flex justify-content-around">';
-
-              // Loop through reviews in the chunk
-              foreach ($chunk as $review) {
-                // Display dynamic content (review card)
-                echo '<div class="card" style="width: 18rem;">';
-                echo '<div class="card-body">';
-                echo '<h5 class="card-title">' . $review['Name'] . '</h5>';
-                echo '<p class="card-text">' . $review['Review'] . '</p>';
-                echo '</div>';
-                echo '</div>';
-              }
-
-              // End card wrapper
-              echo '</div>';
-
-              // End carousel item
-              echo '</div>';
+            // Fetch the result
+            $row_provider_id = $result_provider_id->fetch_assoc();
+            $provider_id = $row_provider_id['id'];
+        
+            // Step 3: Fetch records from the reviews table with the same ProviderId
+            // Prepare the query
+            $sql_reviews = "SELECT Name, Review FROM reviews WHERE ProviderId = $provider_id";
+        
+            // Execute the query
+            $result_reviews = $conn->query($sql_reviews);
+        
+            // Check if there are any records
+            if ($result_reviews->num_rows > 0) {
+                // Display each fetched record in groups of three
+                $reviews = $result_reviews->fetch_all(MYSQLI_ASSOC);
+                $chunks = array_chunk($reviews, 3); // Split reviews into chunks of three
+        
+                // Loop through each chunk
+                $active = true; // Variable to track the active carousel item
+                foreach ($chunks as $chunk) {
+                    // Start carousel item
+                    echo '<div class="carousel-item ';
+                    if ($active) {
+                        echo 'active'; // Set the first item as active
+                        $active = false; // Set active to false for subsequent items
+                    }
+                    echo '">';
+        
+                    // Start card wrapper
+                    echo '<div class="card-wrapper container-sm d-flex justify-content-around">';
+        
+                    // Loop through reviews in the chunk
+                    foreach ($chunk as $review) {
+                        // Display dynamic content (review card)
+                        echo '<div class="card" style="width: 18rem;">';
+                        echo '<div class="card-body">';
+                        echo '<h5 class="card-title">' . $review['Name'] . '</h5>';
+                        echo '<p class="card-text">' . $review['Review'] . '</p>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+        
+                    // End card wrapper
+                    echo '</div>';
+        
+                    // End carousel item
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="carousel-item active"><p>No reviews found for the provider.</p></div>';
             }
-          } else {
-            echo '<div class="carousel-item active"><p>No reviews found for the provider.</p></div>';
-          }
         } else {
-          echo '<div class="carousel-item active"><p>Provider not found.</p></div>';
+            echo '<div class="carousel-item active"><p>Provider not found.</p></div>';
         }
-
+        
         // Close the connection
         $conn->close();
         ?>
-      </div>
-      <!-- Carousel controls -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Add Review
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add Review</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form action="../php/companyPage.php?service_provider_name=<?php echo urlencode($serviceProviderName); ?>" method="post">
-              <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp">
-              </div>
-              <div class="mb-3">
-                <label for="reviewMessage" class="form-label">Add Review</label>
-                <textarea class="form-control" id="reviewMessage" name="review" rows="3"></textarea>
-              </div>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-
-
-
-
-          </div>
-
-
         </div>
-      </div>
-    </div>
-
-  </section>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Select buttons
-      const selectButtons = document.querySelectorAll('.select-service');
-
-      // Add click event listeners to select buttons
-      selectButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-          event.preventDefault();
-          // Toggle 'selected' class for the clicked button
-          this.classList.toggle('selected');
-
-          // Change button color to green when selected
-          if (this.classList.contains('selected')) {
-            this.style.backgroundColor = 'green';
-          } else {
-            this.style.backgroundColor = ''; // Reset to default
-          }
+        <!-- Carousel controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        </div>
+        
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Add Review
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="../php/companyPage.php?service_provider_name=<?php echo urlencode($serviceProviderName); ?>" method="post">
+                  <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                  </div>
+                  <div class="mb-3">
+                    <label for="reviewMessage" class="form-label">Add Review</label>
+                    <textarea class="form-control" id="reviewMessage" name="review" rows="3"></textarea>
+                  </div>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to handle button selection state
+            function toggleSelection(button) {
+                // Toggle 'selected' class for the clicked button
+                button.classList.toggle('selected');
+        
+                // Change button color to green when selected
+                if (button.classList.contains('selected')) {
+                    button.style.backgroundColor = 'green';
+                } else {
+                    button.style.backgroundColor = ''; // Reset to default
+                }
+            }
+        
+            // Select buttons
+            const selectButtons = document.querySelectorAll('.select-service');
+        
+            // Add click event listeners to select buttons
+            selectButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    toggleSelection(this);
+        
+                    // Store the selection state in local storage
+                    const buttonId = this.getAttribute('id');
+                    const isSelected = this.classList.contains('selected');
+                    localStorage.setItem(buttonId, isSelected);
+                });
+        
+                // Retrieve the selection state from local storage on page load
+                const buttonId = button.getAttribute('id');
+                const isSelected = localStorage.getItem(buttonId) === 'true';
+                if (isSelected) {
+                    button.classList.add('selected');
+                    button.style.backgroundColor = 'green';
+                }
+            });
+        
+            // Confirm button
+            const confirmButton = document.getElementById('confirm-button');
         });
-      });
-
-      // Confirm button
-      const confirmButton = document.getElementById('confirm-button');
-
+        
+        
       // Add click event listener to confirm button
       confirmButton.addEventListener('click', function(event) {
         event.preventDefault();
@@ -490,7 +502,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           alert('Error: Provider email not found.');
         }
       });
-    });
+    
   </script>
   <!-- Footer -->
   <?php
