@@ -177,11 +177,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($selected == '1') {
               // Check if the record already exists in ordered_services
-              $sql_check_existence = "SELECT * FROM ordered_services WHERE ServiceId = $serviceId AND UserId = '$user_id'";
+              $sql_check_existence = "SELECT * FROM ordered_services WHERE ServiceId = $serviceId";
               $result_check_existence = $conn->query($sql_check_existence);
               if ($result_check_existence->num_rows == 0) {
                 // If the record does not exist, insert it into the ordered_services table
-                $sql_insert = "INSERT INTO ordered_services (ServiceId, UserId) VALUES ($serviceId, '$user_id')";
+                $sql_insert = "INSERT INTO ordered_services (ServiceId) VALUES ($serviceId)";
                 if ($conn->query($sql_insert) === TRUE) {
                   echo "Service with ID $serviceId added to ordered_services.";
                 } else {
@@ -190,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               }
             } else {
               // If the button is toggled off, delete the record from the ordered_services table
-              $sql_delete = "DELETE FROM ordered_services WHERE ServiceId = $serviceId AND UserId = '$user_id'";
+              $sql_delete = "DELETE FROM ordered_services WHERE ServiceId = $serviceId";
               if ($conn->query($sql_delete) === TRUE) {
                 echo "Service with ID $serviceId removed from ordered_services.";
               } else {
@@ -241,6 +241,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               echo "Provider not found.";
             }
           }
+
+
+
           // Close the connection
           $conn->close();
           ?>

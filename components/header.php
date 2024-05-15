@@ -39,11 +39,11 @@
     // Loop through the fetched results
     while ($row = mysqli_fetch_assoc($result)) {
       // Output each value as a dropdown item
-       // Output each value as a dropdown item with a redirect link
-    $serviceProviderName = $row['Name'];
-    $redirectURL = "../php/companyPage.php?service_provider_name=" . urlencode($serviceProviderName);
-    echo '<a class="dropdown-item" href="' . $redirectURL . '">' . $serviceProviderName . '</a>';
-  }
+      // Output each value as a dropdown item with a redirect link
+      $serviceProviderName = $row['Name'];
+      $redirectURL = "../php/companyPage.php?service_provider_name=" . urlencode($serviceProviderName);
+      echo '<a class="dropdown-item" href="' . $redirectURL . '">' . $serviceProviderName . '</a>';
+    }
     echo '<a class="dropdown-item" href="../php/serviceProvidersPage.php">View More</a>';
 
     // Close the dropdown menu
@@ -59,5 +59,6 @@
   // Close the database connection
   mysqli_close($conn);
   ?>
+  
 
 </nav>
