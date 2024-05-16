@@ -21,10 +21,11 @@
     // Start a session
     session_start();
 
-    // Set UserId to PHPSESSID
-    $_SESSION['UserId'] = session_id();
-
-    // Now $_SESSION['UserId'] holds the same value as PHPSESSID
+    // Check if UserId is already set in the session
+    if (!isset($_SESSION['UserId'])) {
+        // If UserId is not set, generate a new one
+        $_SESSION['UserId'] = generateUserId();
+    }
 
     // Function to generate a unique user ID
     function generateUserId()
@@ -44,7 +45,7 @@
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
-    } 
+    }
     // Fetch SectionCode from URL (assuming it's passed as a query parameter)
     if (isset($_GET['selected_section'])) {
         $sectionCode = $conn->real_escape_string($_GET['selected_section']);

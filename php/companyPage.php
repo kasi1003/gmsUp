@@ -1,53 +1,3 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "htdb";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Get form data
-  $name = $_POST['name'];
-  $review = $_POST['review'];
-
-  // Get the service_provider_name from the URL parameter
-  $serviceProviderName = $_GET['service_provider_name'];
-
-  // Query the database to get the id value corresponding to the service_provider_name
-  $sql_provider_id = "SELECT id FROM service_providers WHERE Name = '$serviceProviderName'";
-  $result_provider_id = $conn->query($sql_provider_id);
-
-  // Check if the query was successful
-  if ($result_provider_id->num_rows > 0) {
-    // Fetch the result
-    $row_provider_id = $result_provider_id->fetch_assoc();
-    $provider_id = $row_provider_id['id'];
-
-    // Insert the review into the reviews table
-    $sql_insert_review = "INSERT INTO reviews (Name, Review, ProviderId) VALUES ('$name', '$review', $provider_id)";
-
-    if ($conn->query($sql_insert_review) === TRUE) {
-      echo "Review added successfully!";
-    } else {
-      echo "Error: " . $sql_insert_review . "<br>" . $conn->error;
-    }
-  } else {
-    echo "Provider not found.";
-  }
-  // Assuming you have the service provider name stored in a variable called $serviceProviderName
-  $encodedServiceProviderName = rawurlencode($serviceProviderName);
-  // Redirect to the companyPage.php with the encoded service provider name
-  header("Location: ../php/companyPage.php?service_provider_name=" . $encodedServiceProviderName);
-  exit(); // Ensure that no further code is executed
-
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,8 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+  <!--navbar-->
   <?php
-  include '../components/header.php'; // or include_once if you want to ensure it's included only once
+  include '../components/header.php';
   ?>
 
   <!--first section-->
@@ -139,21 +90,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           // Step 1: Extract the service provider name from the URL
           $service_provider_name = $_GET['service_provider_name'];
           // Step 2: Retrieve the UserId from the session or generate a new one if not available
-          // Step 1: Retrieve the UserId from the session
-          if (isset($_SESSION['UserId'])) {
-            $user_id = $_SESSION['UserId'];
+          if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
           } else {
-            // Set UserId to PHPSESSID
-            $_SESSION['UserId'] = session_id();
-
-            // Now $_SESSION['UserId'] holds the same value as PHPSESSID
-
-            // Function to generate a unique user ID
-            function generateUserId()
-            {
-              // Use a simple method to generate a unique user ID
-              return 'User_' . uniqid(); // Example format: User_randomUniqueId
-            }
+            // Generate a unique random user id
+            $user_id = uniqid();
+            $_SESSION['user_id'] = $user_id; // Store the user id in the session
           }
           // Step 2: Retrieve the corresponding ID from the service_providers table
           // Establish a connection to your database (Replace the values with your actual database credentials)
@@ -177,11 +119,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($selected == '1') {
               // Check if the record already exists in ordered_services
-              $sql_check_existence = "SELECT * FROM ordered_services WHERE ServiceId = $serviceId";
+              $sql_check_existence = "SELECT * FROM ordered_services WHERE ServiceId = $serviceId AND UserId = '$user_id'";
               $result_check_existence = $conn->query($sql_check_existence);
               if ($result_check_existence->num_rows == 0) {
                 // If the record does not exist, insert it into the ordered_services table
-                $sql_insert = "INSERT INTO ordered_services (ServiceId) VALUES ($serviceId)";
+                $sql_insert = "INSERT INTO ordered_services (ServiceId, UserId) VALUES ($serviceId, '$user_id')";
                 if ($conn->query($sql_insert) === TRUE) {
                   echo "Service with ID $serviceId added to ordered_services.";
                 } else {
@@ -190,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               }
             } else {
               // If the button is toggled off, delete the record from the ordered_services table
-              $sql_delete = "DELETE FROM ordered_services WHERE ServiceId = $serviceId";
+              $sql_delete = "DELETE FROM ordered_services WHERE ServiceId = $serviceId AND UserId = '$user_id'";
               if ($conn->query($sql_delete) === TRUE) {
                 echo "Service with ID $serviceId removed from ordered_services.";
               } else {
@@ -241,9 +183,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               echo "Provider not found.";
             }
           }
-
-
-
           // Close the connection
           $conn->close();
           ?>
@@ -252,27 +191,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               // Add event listeners to all select-service buttons
               var selectServiceButtons = document.querySelectorAll('.select-service');
               selectServiceButtons.forEach(function(button) {
+                var serviceId = button.dataset.serviceId;
+
+                // Check if the service was previously selected
+                if (localStorage.getItem('selectedService_' + serviceId) === 'true') {
+                  button.classList.add('selected');
+                  button.classList.remove('btn-primary');
+                  button.classList.add('btn-success'); // Change color to green
+                }
+
                 button.addEventListener('click', function() {
-                  var serviceId = button.dataset.serviceId;
                   var selected = !button.classList.contains('selected'); // Toggle the selected state
-                  updateOrderedServices(serviceId, selected);
+
+                  updateOrderedServices(serviceId, selected, function(success) {
+                    if (success) {
+                      // Update the button's appearance based on the selected state
+                      if (selected) {
+                        button.classList.add('selected');
+                        button.classList.remove('btn-primary');
+                        button.classList.add('btn-success'); // Change color to green
+                      } else {
+                        button.classList.remove('selected');
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-primary'); // Change color to blue
+                      }
+
+                      // Store the selected state in local storage
+                      localStorage.setItem('selectedService_' + serviceId, selected);
+                    } else {
+                      console.error('Error updating ordered services.');
+                    }
+                  });
                 });
               });
 
-              function updateOrderedServices(serviceId, selected) {
+              function updateOrderedServices(serviceId, selected, callback) {
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                   if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                       console.log(xhr.responseText);
-                      // Update the button's appearance based on the selected state
-                      var button = document.querySelector('[data-service-id="' + serviceId + '"]');
-                      if (selected) {
-                        button.classList.add('selected');
-                      } else {
-                        button.classList.remove('selected');
-                      }
+                      callback(true); // Indicate success
                     } else {
+                      callback(false); // Indicate failure
                       console.error('Error:', xhr.status);
                     }
                   }
@@ -294,6 +255,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </section>
+
+ 
   <section class="funeral-services">
 
     <h2 style="display: flex; justify-content: center; color: white;">Services</h2>
@@ -315,159 +278,116 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Step 1: Get the service_provider_name from the URL parameter
-        
+
         $serviceProviderName = $_GET['service_provider_name'];
-        
+
         // Step 2: Query the database to get the id value corresponding to the service_provider_name
         $sql_provider_id = "SELECT id FROM service_providers WHERE Name = '$serviceProviderName'";
         $result_provider_id = $conn->query($sql_provider_id);
-        
+
         // Check if the query was successful
         if ($result_provider_id->num_rows > 0) {
-            // Fetch the result
-            $row_provider_id = $result_provider_id->fetch_assoc();
-            $provider_id = $row_provider_id['id'];
-        
-            // Step 3: Fetch records from the reviews table with the same ProviderId
-            // Prepare the query
-            $sql_reviews = "SELECT Name, Review FROM reviews WHERE ProviderId = $provider_id";
-        
-            // Execute the query
-            $result_reviews = $conn->query($sql_reviews);
-        
-            // Check if there are any records
-            if ($result_reviews->num_rows > 0) {
-                // Display each fetched record in groups of three
-                $reviews = $result_reviews->fetch_all(MYSQLI_ASSOC);
-                $chunks = array_chunk($reviews, 3); // Split reviews into chunks of three
-        
-                // Loop through each chunk
-                $active = true; // Variable to track the active carousel item
-                foreach ($chunks as $chunk) {
-                    // Start carousel item
-                    echo '<div class="carousel-item ';
-                    if ($active) {
-                        echo 'active'; // Set the first item as active
-                        $active = false; // Set active to false for subsequent items
-                    }
-                    echo '">';
-        
-                    // Start card wrapper
-                    echo '<div class="card-wrapper container-sm d-flex justify-content-around">';
-        
-                    // Loop through reviews in the chunk
-                    foreach ($chunk as $review) {
-                        // Display dynamic content (review card)
-                        echo '<div class="card" style="width: 18rem;">';
-                        echo '<div class="card-body">';
-                        echo '<h5 class="card-title">' . $review['Name'] . '</h5>';
-                        echo '<p class="card-text">' . $review['Review'] . '</p>';
-                        echo '</div>';
-                        echo '</div>';
-                    }
-        
-                    // End card wrapper
-                    echo '</div>';
-        
-                    // End carousel item
-                    echo '</div>';
-                }
-            } else {
-                echo '<div class="carousel-item active"><p>No reviews found for the provider.</p></div>';
+          // Fetch the result
+          $row_provider_id = $result_provider_id->fetch_assoc();
+          $provider_id = $row_provider_id['id'];
+
+          // Step 3: Fetch records from the reviews table with the same ProviderId
+          // Prepare the query
+          $sql_reviews = "SELECT Name, Review FROM reviews WHERE ProviderId = $provider_id";
+
+          // Execute the query
+          $result_reviews = $conn->query($sql_reviews);
+
+          // Check if there are any records
+          if ($result_reviews->num_rows > 0) {
+            // Display each fetched record in groups of three
+            $reviews = $result_reviews->fetch_all(MYSQLI_ASSOC);
+            $chunks = array_chunk($reviews, 3); // Split reviews into chunks of three
+
+            // Loop through each chunk
+            $active = true; // Variable to track the active carousel item
+            foreach ($chunks as $chunk) {
+              // Start carousel item
+              echo '<div class="carousel-item ';
+              if ($active) {
+                echo 'active'; // Set the first item as active
+                $active = false; // Set active to false for subsequent items
+              }
+              echo '">';
+
+              // Start card wrapper
+              echo '<div class="card-wrapper container-sm d-flex justify-content-around">';
+
+              // Loop through reviews in the chunk
+              foreach ($chunk as $review) {
+                // Display dynamic content (review card)
+                echo '<div class="card" style="width: 18rem;">';
+                echo '<div class="card-body">';
+                echo '<h5 class="card-title">' . $review['Name'] . '</h5>';
+                echo '<p class="card-text">' . $review['Review'] . '</p>';
+                echo '</div>';
+                echo '</div>';
+              }
+
+              // End card wrapper
+              echo '</div>';
+
+              // End carousel item
+              echo '</div>';
             }
+          } else {
+            echo '<div class="carousel-item active"><p>No reviews found for the provider.</p></div>';
+          }
         } else {
-            echo '<div class="carousel-item active"><p>Provider not found.</p></div>';
+          echo '<div class="carousel-item active"><p>Provider not found.</p></div>';
         }
-        
+
         // Close the connection
         $conn->close();
         ?>
-        </div>
-        <!-- Carousel controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-        </div>
-        
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Add Review
-        </button>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Review</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- Carousel controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Add Review
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="../php/companyPage.php?service_provider_name=<?php echo urlencode($serviceProviderName); ?>" method="post">
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name">
               </div>
-              <div class="modal-body">
-                <form action="../php/companyPage.php?service_provider_name=<?php echo urlencode($serviceProviderName); ?>" method="post">
-                  <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name">
-                  </div>
-                  <div class="mb-3">
-                    <label for="reviewMessage" class="form-label">Add Review</label>
-                    <textarea class="form-control" id="reviewMessage" name="review" rows="3"></textarea>
-                  </div>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+              <div class="mb-3">
+                <label for="reviewMessage" class="form-label">Add Review</label>
+                <textarea class="form-control" id="reviewMessage" name="review" rows="3"></textarea>
               </div>
-            </div>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
           </div>
         </div>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to handle button selection state
-            function toggleSelection(button) {
-                // Toggle 'selected' class for the clicked button
-                button.classList.toggle('selected');
-        
-                // Change button color to green when selected
-                if (button.classList.contains('selected')) {
-                    button.style.backgroundColor = 'green';
-                } else {
-                    button.style.backgroundColor = ''; // Reset to default
-                }
-            }
-        
-            // Select buttons
-            const selectButtons = document.querySelectorAll('.select-service');
-        
-            // Add click event listeners to select buttons
-            selectButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    toggleSelection(this);
-        
-                    // Store the selection state in local storage
-                    const buttonId = this.getAttribute('id');
-                    const isSelected = this.classList.contains('selected');
-                    localStorage.setItem(buttonId, isSelected);
-                });
-        
-                // Retrieve the selection state from local storage on page load
-                const buttonId = button.getAttribute('id');
-                const isSelected = localStorage.getItem(buttonId) === 'true';
-                if (isSelected) {
-                    button.classList.add('selected');
-                    button.style.backgroundColor = 'green';
-                }
-            });
-        
-            // Confirm button
-            const confirmButton = document.getElementById('confirm-button');
-        });
-        
-        
+      </div>
+    </div>
+    <script>
       // Add click event listener to confirm button
       confirmButton.addEventListener('click', function(event) {
         event.preventDefault();
@@ -505,16 +425,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           alert('Error: Provider email not found.');
         }
       });
-    
-  </script>
+    </script>
+  </section>
   <!-- Footer -->
   <?php
   include '../components/footer.php'; // or include_once if you want to ensure it's included only once
   ?>
-  <!-- Footer -->
-
-  <!--review section-->
-
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
   <script src="../js/companyPage.js"></script>
