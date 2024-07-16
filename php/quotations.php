@@ -7,7 +7,7 @@ $dbname = "htdb";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Start a session
@@ -25,20 +25,45 @@ function generateUserId() {
     return 'User_' . uniqid(); // Example format: User_randomUniqueId
 }
 
+// Function to send email
+function sendQuotationEmail($to, $subject, $message, $headers) {
+    // Use the mail() function to send email
+    return mail($to, $subject, $message, $headers);
+}
 
+$companyEmail = "company@example.com"; // Company email address
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sendQuotation']) && isset($_POST['clientEmail'])) {
+    $clientEmail = $_POST['clientEmail'];
+
+    // Prepare the email
+    $subject = "Your Quotation";
+    $message = "Dear Customer,\n\nPlease find attached your quotation.\n\nBest Regards,\nYour Company";
+    $headers = "From: no-reply@yourcompany.com"; // Adjust the From email as needed
+
+    // Send the email to the client
+    $clientEmailSent = sendQuotationEmail($clientEmail, $subject, $message, $headers);
+
+    // Send the email to the company
+    $companyEmailSent = sendQuotationEmail($companyEmail, $subject, $message, $headers);
+
+    if ($clientEmailSent && $companyEmailSent) {
+        $emailStatus = "Quotation sent to both client and company successfully.";
+    } else {
+        $emailStatus = "Failed to send quotation. Please try again.";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <link rel="stylesheet" href="../css/quote.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-BPxTfN7eBUceU3W5Fs5IxFh+0ObJmo4Qh/a9x9vN1oQwvEJrhzMQ8biJrbUlf7nWhHr58Hh6gPuGvz6ARu94Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0rY9fXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 </head>
-
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,55 +89,30 @@ function generateUserId() {
       </ul>
     </div>
   </nav>
-  <!--home landing page-->
-<section class="topSection">
-  <div class="card border-secondary bg-dark m-5 h-100" style="width: 85%;">
-    <div class="card-header border-secondary">
-      <h1 class="service-providers-header-text"></h1>
-      <p class="service-providers-subheading">
-        Quotation
-      </p>
-    </div>
-    <div class="card-body text-secondary">
-      <!-- Display a link or button to download the quotation -->
-
-      <script>
-        // Fetch user ID from the session cookie
-        var userId = getCookie('PHPSESSID');
-        console.log("User ID from session cookie:", userId);
-
-        // Function to get cookie by name
-        function getCookie(name) {
-          var cookieArr = document.cookie.split(';');
-          for(var i = 0; i < cookieArr.length; i++) {
-            var cookiePair = cookieArr[i].split('=');
-            if(name == cookiePair[0].trim()) {
-              return decodeURIComponent(cookiePair[1]);
-            }
-          }
-          return null;
-        }
-
-        // Send AJAX request to pdf_quote.php with user ID
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            // Response from pdf_quote.php
-            console.log(this.responseText);
-          }
-        };
-        xhttp.open("GET", "pdf_quote.php?user_id=" + userId, true); // Include user ID in the URL
-        xhttp.send();
-
-      </script>
-
-      <a href="pdf_quote.php" class="btn btn-primary">Download Quotation</a>
-
-    </div>
+  <!-- Home landing page -->
+  <section class="topSection">
+    <div class="card border-secondary bg-dark m-5 h-100" style="width: 85%;">
+      <div class="card-header border-secondary">
+        <h1 class="service-providers-header-text"></h1>
+        <p class="service-providers-subheading">Quotation</p>
+      </div>
+      <div class="card-body text-secondary">
+        <!-- Display a form to collect the user's email -->
+        <form method="POST" action="">
+  <div class="form-group">
+    <label for="clientEmail">Enter your email address to receive the quotation:</label>
+    <input type="email" class="form-control" id="clientEmail" name="clientEmail" required>
   </div>
-</section>
-
-
+  <button type="submit" class="btn btn-primary" name="sendQuotation">Send Quotation</button>
+</form>
+        <?php
+        if (isset($emailStatus)) {
+            echo '<p>' . $emailStatus . '</p>';
+        }
+        ?>
+      </div>
+    </div>
+  </section>
   <div>
     <!-- Footer -->
     <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
@@ -123,33 +123,19 @@ function generateUserId() {
           <span>Get connected with us on social networks:</span>
         </div>
         <!-- Left -->
-
         <!-- Right -->
         <div>
-          <a href="" class="text-white me-4">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="" class="text-white me-4">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="" class="text-white me-4">
-            <i class="fab fa-google"></i>
-          </a>
-          <a href="" class="text-white me-4">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="" class="text-white me-4">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="" class="text-white me-4">
-            <i class="fab fa-github"></i>
-          </a>
+          <a href="" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
+          <a href="" class="text-white me-4"><i class="fab fa-twitter"></i></a>
+          <a href="" class="text-white me-4"><i class="fab fa-google"></i></a>
+          <a href="" class="text-white me-4"><i class="fab fa-instagram"></i></a>
+          <a href="" class="text-white me-4"><i class="fab fa-linkedin"></i></a>
+          <a href="" class="text-white me-4"><i class="fab fa-github"></i></a>
         </div>
         <!-- Right -->
       </section>
       <!-- Section: Social media -->
-
-      <!-- Section: Links  -->
+      <!-- Section: Links -->
       <section class="">
         <div class="container text-center text-md-start mt-5">
           <!-- Grid row -->
@@ -159,54 +145,31 @@ function generateUserId() {
               <!-- Content -->
               <h6 class="text-uppercase fw-bold">Company name</h6>
               <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-              <p>
-                Here you can use rows and columns to organize your footer
-                content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit.
-              </p>
+              <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </div>
             <!-- Grid column -->
-
             <!-- Grid column -->
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
               <!-- Links -->
               <h6 class="text-uppercase fw-bold">Products</h6>
               <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-              <p>
-                <a href="#!" class="text-white">MDBootstrap</a>
-              </p>
-              <p>
-                <a href="#!" class="text-white">MDWordPress</a>
-              </p>
-              <p>
-                <a href="#!" class="text-white">BrandFlow</a>
-              </p>
-              <p>
-                <a href="#!" class="text-white">Bootstrap Angular</a>
-              </p>
+              <p><a href="#!" class="text-white">MDBootstrap</a></p>
+              <p><a href="#!" class="text-white">MDWordPress</a></p>
+              <p><a href="#!" class="text-white">BrandFlow</a></p>
+              <p><a href="#!" class="text-white">Bootstrap Angular</a></p>
             </div>
             <!-- Grid column -->
-
             <!-- Grid column -->
             <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
               <!-- Links -->
               <h6 class="text-uppercase fw-bold">Useful links</h6>
               <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-              <p>
-                <a href="#!" class="text-white">Your Account</a>
-              </p>
-              <p>
-                <a href="#!" class="text-white">Become an Affiliate</a>
-              </p>
-              <p>
-                <a href="#!" class="text-white">Shipping Rates</a>
-              </p>
-              <p>
-                <a href="#!" class="text-white">Help</a>
-              </p>
+              <p><a href="#!" class="text-white">Your Account</a></p>
+              <p><a href="#!" class="text-white">Become an Affiliate</a></p>
+              <p><a href="#!" class="text-white">Shipping Rates</a></p>
+              <p><a href="#!" class="text-white">Help</a></p>
             </div>
             <!-- Grid column -->
-
             <!-- Grid column -->
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
               <!-- Links -->
@@ -222,22 +185,15 @@ function generateUserId() {
           <!-- Grid row -->
         </div>
       </section>
-      <!-- Section: Links  -->
-
+      <!-- Section: Links -->
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-        © 2020 Copyright:
+        © 2023 Copyright:
         <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
       </div>
       <!-- Copyright -->
     </footer>
     <!-- Footer -->
   </div>
-  <!-- End of .container -->
-  <script src="../js/khomas.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
-
 </html>
