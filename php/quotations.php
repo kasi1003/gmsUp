@@ -25,6 +25,19 @@ function generateUserId() {
     return 'User_' . uniqid(); // Example format: User_randomUniqueId
 }
 
+// Function to generate a unique code
+function generateUniqueCode($region, $town, $cemetery, $section, $row, $graveNumber, $deceasedName, $receiptNumber, $burialDate) {
+    return strtoupper(substr($region, 0, 3)) . '-' .
+           strtoupper(substr($town, 0, 3)) . '-' .
+           strtoupper(substr($cemetery, 0, 3)) . '-' .
+           $section . '-' .
+           $row . '-' .
+           $graveNumber . '-' .
+           strtoupper(substr($deceasedName, 0, 3)) . '-' .
+           $receiptNumber . '-' .
+           date('Ymd', strtotime($burialDate));
+}
+
 // Function to send email
 function sendQuotationEmail($to, $subject, $message, $headers) {
   // Use the mail() function to send email
@@ -38,9 +51,23 @@ $serviceproviderEmail = "CityOFWindhoek@example.com";
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['clientEmail'])) {
   $clientEmail = filter_var($_POST['clientEmail'], FILTER_SANITIZE_EMAIL);
 
+  // Example data for generating the unique code
+  $region = "Khomas";
+  $town = "Windhoek";
+  $cemetery = "Gammams";
+  $section = "A";
+  $row = "5";
+  $graveNumber = "123";
+  $deceasedName = "PETRUS JOHN";
+  $receiptNumber = "56789";
+  $burialDate = "2024-07-17";
+
+  // Generate the unique code
+  $uniqueCode = generateUniqueCode($region, $town, $cemetery, $section, $row, $graveNumber, $deceasedName, $receiptNumber, $burialDate);
+
   // Prepare the email
   $subject = "Your Quotation";
-  $message = "Dear Customer,\n\nPlease find attached your quotation.\n\nBest Regards,\nYour Company";
+  $message = "Dear Customer,\n\nPlease find attached your quotation.\n\nUnique Code: $uniqueCode\n\nBest Regards,\nYour Company";
   $headers = "From: no-reply@yourcompany.com";
 
   // Send the email to the client
@@ -50,10 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['clientEmail'])) {
   $companyEmailSent = sendQuotationEmail($companyEmail, $subject, $message, $headers);
 
   // Send the email to the service provider 
-  $serviceproviderEmailSent = sendQuotationEmail($companyEmail, $subject, $message, $headers);
+  $serviceproviderEmailSent = sendQuotationEmail($serviceproviderEmail, $subject, $message, $headers);
 
-  if ($clientEmailSent && $companyEmailSent && $serviceProviderName) {
-      $emailStatus = "Quotation sent to both client and company successfully.";
+  if ($clientEmailSent && $companyEmailSent && $serviceproviderEmailSent) {
+      $emailStatus = "Quotation sent to client, company, and service provider successfully.";
   } else {
       $emailStatus = "Failed to send quotation. Please try again.";
   }
@@ -205,8 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['clientEmail'])) {
               <h6 class="text-uppercase fw-bold">Company name</h6>
               <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
               <p>
-                Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
-                consectetur adipisicing elit.
+                Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               </p>
             </div>
             <!-- Grid column -->
@@ -270,16 +296,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['clientEmail'])) {
 
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-        © 2023 Copyright:
-        <a class="text-white" href="#">MDBootstrap.com</a>
+        © 2024 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
       </div>
       <!-- Copyright -->
     </footer>
     <!-- Footer -->
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXlBv5PH0v7aLrC8j/uf/Q2SnTNpPLZXF1cwlXOx9Krbc4CF2IMmjF4biFxB" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9QY2Ey/vSfj8JoHnjERQ6BRXr2lE2VXw7DblJu2anrp62+UJeKBYG6g" crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJTy5KVphtPhzWj9WO1clHTMGaWfl0IBWAEG6WoKt9KRniTW9" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 
 </html>
