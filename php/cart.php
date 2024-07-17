@@ -15,6 +15,7 @@
 <body>
     <?php
     include '../components/header.php';
+    include '../components/db.php';
     session_start();
 
     if (isset($_SESSION['UserId'])) {
