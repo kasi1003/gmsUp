@@ -50,10 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['clientEmail'])) {
   $companyEmailSent = sendQuotationEmail($companyEmail, $subject, $message, $headers);
 
   // Send the email to the service provider 
-  $serviceproviderEmailSent = sendQuotationEmail($serviceproviderEmail, $subject, $message, $headers);
+  $serviceproviderEmailSent = sendQuotationEmail($companyEmail, $subject, $message, $headers);
 
-  if ($clientEmailSent && $companyEmailSent && $serviceproviderEmailSent) {
-      $emailStatus = "Quotation sent to client, company, and service provider successfully.";
+  if ($clientEmailSent && $companyEmailSent && $serviceProviderName) {
+      $emailStatus = "Quotation sent to both client and company successfully.";
   } else {
       $emailStatus = "Failed to send quotation. Please try again.";
   }

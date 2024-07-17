@@ -32,7 +32,7 @@
 $server_name = "localhost";
 $username = "root";
 $password = "";
-$dbname = "heavenly_tomb";
+$dbname = "htdb";
 
 // Establish a connection to the MySQL database
 $conn = new mysqli($server_name, $username, $password, $dbname);

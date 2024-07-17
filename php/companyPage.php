@@ -333,9 +333,6 @@
         </div>
         <div class="col">
           <div class="d-flex justify-content-between align-items-center">
-            <h2>Reviews</h2>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Submit a Review
             </button>
           </div>
           <?php
