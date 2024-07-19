@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="../css/serviceProvidersPage.css" />
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-
+</head>
 
 <body>
     <?php
@@ -21,7 +20,6 @@
     if (isset($_SESSION['UserId'])) {
         $user_id = $_SESSION['UserId'];
     } else {
-        // Set UserId to PHPSESSID
         // Set UserId to PHPSESSID if not already set
         $_SESSION['UserId'] = session_id();
         $user_id = $_SESSION['UserId'];
@@ -35,9 +33,7 @@
     }
     ?>
 
-
     <section class="top-container pr-4">
-
         <div style="display: flex; flex-direction: column; width: 100%" style="display: flex; justify-content: center;">
             <h1 class="service-providers-header-text pt-3 text-light" style="display: flex; justify-content: center;">
                 Cart</h1>
@@ -49,8 +45,6 @@
 
                 <div class="card-body text-secondary">
                     <?php
-
-
                     // Database connection details
                     $servername = "localhost";
                     $username = "root";
@@ -140,6 +134,14 @@
                     $conn->close();
                     ?>
 
+                    <form action="order_grave.php" method="POST">
+                        <div class="form-group">
+                            <label for="graveOrder">Order Graves:</label>
+                            <input type="number" class="form-control" id="graveOrder" name="graveOrder" placeholder="Enter number of graves">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Order Graves</button>
+                    </form>
+
                 </div>
             </div>
             <div class="card border-secondary bg-dark mb-3" style="width: 98%; height: 45%; margin-left: 1.5rem;">
@@ -162,19 +164,27 @@
                             </thead>
                             <tbody>
                                 <tr>
-
+                                    <!-- Example row -->
+                                    <td>Provider Name</td>
+                                    <td>Service Name</td>
+                                    <td>Service Description</td>
+                                    <td>Price</td>
+                                    <td><button type="button" class="btn btn-danger">Remove</button></td>
                                 </tr>
                             </tbody>
                         </table>
-
-
                     </div>
+
+                    <form action="order_service.php" method="POST">
+                        <div class="form-group">
+                            <label for="serviceOrder">Order Services:</label>
+                            <input type="text" class="form-control" id="serviceOrder" name="serviceOrder" placeholder="Enter service name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Order Service</button>
+                    </form>
                 </div>
             </div>
         </div>
-
-
-
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
