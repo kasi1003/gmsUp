@@ -42,9 +42,6 @@ if ($resultRegion->num_rows > 0) {
   exit;
 }
 
-// Fetch towns and cemeteries data based on region_id
-// (Existing code for fetching towns and cemeteries goes here)
-
 // Close the database connection
 $conn->close();
 ?>
@@ -80,11 +77,97 @@ $conn->close();
         </div>
 
         <!-- Embed the iframe dynamically based on the region -->
+        <h2>View Cemeteries</h2>
         <iframe src="<?php echo $iframe_url; ?>" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
 
         <?php
-        // Existing code for displaying towns and cemeteries
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Query the towns table for towns belonging to the selected region
+        $sqlTowns = "SELECT town_id, name FROM towns WHERE region_id = ?";
+        $stmtTowns = $conn->prepare($sqlTowns);
+        $stmtTowns->bind_param("i", $region_id);
+        $stmtTowns->execute();
+        $resultTowns = $stmtTowns->get_result();
+
+        // Check if there are towns to display
+        if ($resultTowns->num_rows > 0) {
+          // Output the list of towns in a top-down layout
+          echo '<div class="towns-container">';
+          while ($rowTown = $resultTowns->fetch_assoc()) {
+            echo '<div class="town">';
+            echo '<h2>' . $rowTown['name'] . '</h2>';
+
+            // Query the cemetery table for cemeteries belonging to the current town
+            $sqlCemeteries = "SELECT CemeteryName FROM cemetery WHERE Town = ?";
+            $stmtCemeteries = $conn->prepare($sqlCemeteries);
+            $stmtCemeteries->bind_param("i", $rowTown['town_id']); // Assuming town_id is an integer
+            $stmtCemeteries->execute();
+            $resultCemeteries = $stmtCemeteries->get_result();
+
+            // Check if there are cemeteries to display
+            if ($resultCemeteries->num_rows > 0) {
+              // Output the list of cemeteries with clickable buttons
+              echo '<div class="cemeteries-container">';
+              while ($rowCemetery = $resultCemeteries->fetch_assoc()) {
+                echo '<button class="cemetery-button" onclick="navigateToCemetery(\'' . $rowCemetery['CemeteryName'] . '\')">' . $rowCemetery['CemeteryName'] . '</button>';
+              }
+              echo '</div>';
+            } else {
+              // No cemeteries found for the current town
+              echo '<p>No cemeteries found for ' . $rowTown['name'] . '</p>';
+            }
+
+            echo '</div>'; // Close town div
+          }
+          echo '</div>'; // Close towns-container div
+        } else {
+          // No towns found for the selected region
+          echo '<p>No towns found for the selected region.</p>';
+        }
+
+        // Close the database connection
+        $conn->close();
         ?>
+
+        <p id="noCemeteriesFound" style="display: none;">No cemeteries found</p>
+
+        <script>
+          function navigateToCemetery(cemeteryName) {
+            // Redirect to cemeteryMap.php with the cemetery_name parameter
+            window.location.href = 'cemeteryMap.php?cemetery_name=' + encodeURIComponent(cemeteryName);
+          }
+
+          function searchCemeteries() {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementsByClassName('cemeteries-container');
+            var noMatch = true;
+            for (i = 0; i < ul.length; i++) {
+              li = ul[i].getElementsByTagName('button');
+              for (var j = 0; j < li.length; j++) {
+                a = li[j].textContent || li[j].innerText;
+                if (a.toUpperCase().startsWith(filter)) {
+                  li[j].style.display = '';
+                  noMatch = false;
+                } else {
+                  li[j].style.display = 'none';
+                }
+              }
+            }
+            var noCemeteries = document.getElementById('noCemeteriesFound');
+            if (noMatch) {
+              noCemeteries.style.display = 'block';
+            } else {
+              noCemeteries.style.display = 'none';
+            }
+          }
+        </script>
       </div>
     </div>
   </section>
@@ -95,34 +178,6 @@ $conn->close();
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
-
-  <script>
-    function searchCemeteries() {
-      var input, filter, ul, li, a, i, txtValue;
-      input = document.getElementById('searchInput');
-      filter = input.value.toUpperCase();
-      ul = document.getElementsByClassName('cemeteries-container');
-      var noMatch = true;
-      for (i = 0; i < ul.length; i++) {
-        li = ul[i].getElementsByTagName('button');
-        for (var j = 0; j < li.length; j++) {
-          a = li[j].textContent || li[j].innerText;
-          if (a.toUpperCase().startsWith(filter)) {
-            li[j].style.display = '';
-            noMatch = false;
-          } else {
-            li[j].style.display = 'none';
-          }
-        }
-      }
-      var noCemeteries = document.getElementById('noCemeteriesFound');
-      if (noMatch) {
-        noCemeteries.style.display = 'block';
-      } else {
-        noCemeteries.style.display = 'none';
-      }
-    }
-  </script>
 </body>
 
 </html>
