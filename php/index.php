@@ -1,6 +1,4 @@
 <?php
-
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,12 +12,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-
 // Close the database connection
 $conn->close();
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,9 +24,38 @@ $conn->close();
     <title>Heavenly Tomb|Home</title>
     <link rel="stylesheet" href="../css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <style>
+        .register-btn {
+            background-color: blue; 
+            color: white;
+            font-size: 1.5rem; 
+            padding: 15px 30px; 
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; 
+        }
+
+        .register-btn:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+        }
+
+        
+        .register-btn-container {
+            position: absolute;
+            top: 110px;
+            right: 27px;
+            z-index: 1000; 
+        }
+
+        
+        .main-container {
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,7 +63,7 @@ $conn->close();
     include '../components/header.php'; // or include_once if you want to ensure it's included only once
     ?>
 
-    <section class="main-image">
+<section class="main-image">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-9">
@@ -114,28 +137,37 @@ $conn->close();
                         </div>
                     </div>
                 </div>
-                <script>
-                    document.getElementById('searchForm').addEventListener('submit', function(event) {
-                        event.preventDefault();
-                        searchGrave();
-                    });
+            </div>
 
-                    function searchGrave() {
-                        var fullName = document.getElementById('fullName').value;
-                        var deathNumber = document.getElementById('deathNumber').value;
-
-                        fetch('../php/search_grave.php?fullName=' + fullName + '&deathNumber=' + deathNumber)
-                            .then(response => response.text())
-                            .then(data => {
-                                document.querySelector('.results').innerHTML = data;
-                            });
-                    }
-                </script>
+            <!-- Position the button with a container -->
+            <div class="register-btn-container">
+                <button id="registerButton" class="btn register-btn">Register Here</button>
             </div>
         </div>
     </section>
-    
-    <!-- Remove the container if you want to extend the Footer to full width. -->
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            searchGrave();
+        });
+
+        function searchGrave() {
+            var fullName = document.getElementById('fullName').value;
+            var deathNumber = document.getElementById('deathNumber').value;
+
+            fetch('../php/search_grave.php?fullName=' + fullName + '&deathNumber=' + deathNumber)
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('.results').innerHTML = data;
+                });
+        }
+
+        document.getElementById('registerButton').addEventListener('click', function() {
+            window.location.href = 'Registration.php';
+        });
+    </script>
+
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <div>
         <!-- Footer -->
