@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Database credentials
 $servername = "localhost";
 $username = "root";
@@ -18,10 +20,10 @@ try {
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
         $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT); // Hash the password
         $user_type = htmlspecialchars(trim($_POST['user_type']));
-        
+
         // Additional fields based on user type
         $services = $description = $motto = $contact_number = $company_email = $region = $constituency = $classification = null;
-        
+
         if ($user_type === 'service_provider') {
             $services = htmlspecialchars(trim($_POST['services']));
             $description = htmlspecialchars(trim($_POST['description']));
@@ -35,19 +37,33 @@ try {
             $contact_number = htmlspecialchars(trim($_POST['contact_number']));
         }
 
-        // Check if the email already exists
+        // Check if the personal email already exists
         $checkEmailStmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
         $checkEmailStmt->bindParam(':email', $email);
         $checkEmailStmt->execute();
         $emailExists = $checkEmailStmt->fetchColumn();
 
+        // Check if the company email already exists, if provided
+        if ($company_email) {
+            $checkCompanyEmailStmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE company_email = :company_email");
+            $checkCompanyEmailStmt->bindParam(':company_email', $company_email);
+            $checkCompanyEmailStmt->execute();
+            $companyEmailExists = $checkCompanyEmailStmt->fetchColumn();
+        } else {
+            $companyEmailExists = false;
+        }
+
         if ($emailExists) {
-            echo "The email address is already registered. Please use a different email.";
+            $_SESSION['error'] = "The email address is already registered. Please use a different email.";
+            header("Location: registration.php");
+        } elseif ($companyEmailExists) {
+            $_SESSION['error'] = "The company email address is already registered. Please use a different company email.";
+            header("Location: registration.php");
         } else {
             // Insert user data into the database
             $sql = "INSERT INTO users (name, email, password, user_type, services, description, motto, contact_number, company_email, region, constituency, classification) VALUES (:name, :email, :password, :user_type, :services, :description, :motto, :contact_number, :company_email, :region, :constituency, :classification)";
             $stmt = $pdo->prepare($sql);
-            
+
             // Bind parameters to the prepared statement
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
@@ -64,16 +80,17 @@ try {
 
             // Execute the statement
             if ($stmt->execute()) {
-                echo "Registration successful!";
-                // Redirect to a success page
-                 header("Location: success.php");
-                 exit();
+                $_SESSION['success'] = "Registration successful!";
+                header("Location: success.php");
+                exit();
             } else {
-                echo "Error: " . $stmt->errorCode();
+                $_SESSION['error'] = "Error: " . $stmt->errorCode();
+                header("Location: registration.php");
             }
         }
     }
 } catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+    $_SESSION['error'] = "Connection failed: " . $e->getMessage();
+    header("Location: registration.php");
 }
 ?>

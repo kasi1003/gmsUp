@@ -63,6 +63,10 @@
         .text-center.text-muted {
             color: #bbbbbb;
         }
+
+        .alert {
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -70,6 +74,19 @@
     <div class="container">
         <h2>Registration Form</h2>
         <p class="text-center text-muted">Join us to manage your cemetery services effortlessly.</p>
+        
+        <?php
+        session_start();
+        if (isset($_SESSION['error'])) {
+            echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
+            unset($_SESSION['success']);
+        }
+        ?>
+
         <form action="register_process.php" method="POST">
             <div class="form-group">
                 <label for="name">Full Name:</label>
