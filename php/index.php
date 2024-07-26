@@ -78,6 +78,12 @@ $conn->close();
         .portfolio-item p {
             margin: 10px 0;
         }
+        .company-logo {
+    max-width: 100px; 
+    height: auto;
+    border-radius: 8px;
+}
+
     </style>
 </head>
 
