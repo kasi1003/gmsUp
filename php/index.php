@@ -21,49 +21,70 @@ $conn->close();
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Heavenly Tomb|Home</title>
+    <title>Heavenly Tomb | Home</title>
     <link rel="stylesheet" href="../css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <style>
         .register-btn {
-            background-color: blue; 
+            background-color: blue;
             color: white;
-            font-size: 1.5rem; 
-            padding: 15px 30px; 
+            font-size: 1.5rem;
+            padding: 15px 30px;
             border: none;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-            transition: transform 0.2s ease, box-shadow 0.2s ease; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .register-btn:hover {
-            transform: scale(1.05); 
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        
         .register-btn-container {
             position: absolute;
             top: 110px;
             right: 27px;
-            z-index: 1000; 
+            z-index: 1000;
         }
 
-        
         .main-container {
             position: relative;
+        }
+
+        .portfolio-section {
+            padding: 30px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .portfolio-item {
+            margin-bottom: 20px;
+        }
+
+        .portfolio-item img {
+            max-width: 100%;
+            border-radius: 8px;
+            height: auto;
+        }
+
+        .portfolio-item h3 {
+            margin-top: 10px;
+            font-size: 1.5em;
+        }
+
+        .portfolio-item p {
+            margin: 10px 0;
         }
     </style>
 </head>
 
 <body>
-    <?php
-    include '../components/header.php'; // or include_once if you want to ensure it's included only once
-    ?>
+    <?php include '../components/header.php'; ?>
 
-<section class="main-image">
+    <section class="main-image">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-9">
@@ -73,6 +94,10 @@ $conn->close();
                                 Graveyard Management System
                             </h1>
                         </div>
+                        <div class="card-body text-secondary">
+                            <h1 class="find-a-cemetery-text">
+                                Click a Region to view Cemeteries
+                            </h1> </div>
                         <div class="card-body text-secondary">
                             <h1 class="find-a-cemetery-text">
                                 Click a Region to view Cemeteries
@@ -139,10 +164,16 @@ $conn->close();
                 </div>
             </div>
 
-            <!-- Position the button with a container -->
             <div class="register-btn-container">
                 <button id="registerButton" class="btn register-btn">Register Here</button>
             </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="container">
+            <h2>Local Decor Companies</h2>
+            <div id="decorCompanies" class="row"></div>
         </div>
     </section>
 
@@ -166,21 +197,48 @@ $conn->close();
         document.getElementById('registerButton').addEventListener('click', function() {
             window.location.href = 'Registration.php';
         });
+        function loadDecorCompanies() {
+    fetch('../php/get_decor_companies.php')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('decorCompanies');
+            container.innerHTML = ''; // Clear previous contents
+            data.forEach(company => {
+                const col = document.createElement('div');
+                col.className = 'col-12 col-md-6 col-lg-4 portfolio-item';
+
+                // Handle company logo
+                const logoHtml = company.company_logo ? `<img src="${company.company_logo}" alt="${company.company_name} logo" class="company-logo" />` : '<p>No logo available</p>';
+
+                // Handle portfolio images
+                const imagesHtml = Array.isArray(JSON.parse(company.portfolio_images))
+                    ? JSON.parse(company.portfolio_images).map(img => `<img src="${img}" alt="${company.company_name} portfolio" class="portfolio-image" />`).join('')
+                    : '<p>No images available</p>';
+
+                col.innerHTML = `
+                    <h3>${company.company_name}</h3>
+                    ${logoHtml}
+                    <p>${company.description}</p>
+                    <p>Contact: <a href="mailto:${company.contact_email}">${company.contact_email}</a></p>
+                    <p>Phone: ${company.contact_number}</p>
+                    <div>${imagesHtml}</div>
+                `;
+                container.appendChild(col);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener('DOMContentLoaded', loadDecorCompanies);
+
+
     </script>
 
-    <!-- Remove the container if you want to extend the Footer to full width. -->
     <div>
-        <!-- Footer -->
-        <?php
-        include '../components/footer.php'; // or include_once if you want to ensure it's included only once
-        ?>
-        <!-- Footer -->
+        <?php include '../components/footer.php'; ?>
     </div>
-    <!-- End of .container -->
 
     <script src="../js/index.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
