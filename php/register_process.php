@@ -5,7 +5,7 @@ session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "htdb (1)";
+$dbname = "htdb";
 
 try {
     // Create a new PDO instance

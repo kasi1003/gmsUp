@@ -12,7 +12,7 @@ require_once('../tcpdf/tcpdf.php');
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "htdb (1)";
+$dbname = "htdb";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
