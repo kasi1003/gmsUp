@@ -28,14 +28,18 @@ $conn->close();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <style>
         .register-btn {
-            background-color: blue;
+            background-color: #96AE8D;
             color: white;
-            font-size: 1.5rem;
-            padding: 15px 30px;
+            font-size: 1.2rem;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            right: 2%;
+        }
+        .btn{
+            border: none;
         }
 
         .register-btn:hover {
@@ -94,16 +98,13 @@ $conn->close();
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-9">
-                    <div class="card border-secondary bg-dark mt-5" style="min-height: 100px">
+                    <div class="card border-secondary  mt-5" style="min-height: 100px">
                         <div class="card-header border-secondary">
-                            <h1 style="color: white; font-size: 3.5em">
+                            <h1 style="color:#444444; font-size: 3.5em">
                                 Graveyard Management System
                             </h1>
                         </div>
-                        <div class="card-body text-secondary">
-                            <h1 class="find-a-cemetery-text">
-                                Click a Region to view Cemeteries
-                            </h1> </div>
+                       
                         <div class="card-body text-secondary">
                             <h1 class="find-a-cemetery-text">
                                 Click a Region to view Cemeteries
@@ -160,7 +161,7 @@ $conn->close();
                                     <label for="deathNumber">Death Number:</label>
                                     <input type="text" id="deathNumber" name="deathNumber" class="form-control" placeholder="Enter death number" required />
                                 </div>
-                                <button type="submit" class="btn btn-primary" style="width: 100%">
+                                <button type="submit" class="btn btn-primary" style="width: 100%; background-color: #96AE8D;">
                                     Search
                                 </button>
                                 <div class="results mt-3"></div>
@@ -170,11 +171,13 @@ $conn->close();
                 </div>
             </div>
 
-            <div class="register-btn-container">
-                <button id="registerButton" class="btn register-btn">Register Here</button>
-            </div>
+            
+            
         </div>
     </section>
+    <div class="register-btn-container">
+                <button id="registerButton" class="btn register-btn">Register Here</button>
+            </div>
 
     <section class="portfolio-section">
         <div class="container">
