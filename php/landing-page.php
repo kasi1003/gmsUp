@@ -35,11 +35,12 @@
                 <i class="fas fa-map-marker-alt"></i>
                 <h3>Cemetery Locator</h3>
                 <p>Easily find loved ones across various cemeteries.</p>
+                <p>View and navigate cemetery layouts.</p>
             </div>
             <div class="feature-item">
                 <i class="fas fa-list-alt"></i>
-                <h3>Plot Management</h3>
-                <p>Manage and organize plots effortlessly.</p>
+                <h3>Grave Management</h3>
+                <p>Book and organize graves effortlessly.</p>
             </div>
             <div class="feature-item">
                 <i class="fas fa-calendar-alt"></i>
@@ -48,8 +49,8 @@
             </div>
             <div class="feature-item">
                 <i class="fas fa-map"></i>
-                <h3>Interactive Maps</h3>
-                <p>View and navigate cemetery layouts.</p>
+                <h3>Register</h3>
+                <p>Sign up and join our esteemed list pf trusted service providers/local authorities or decor companies </p>
             </div>
         </div>
     </section>
@@ -73,14 +74,15 @@
         </div>
     </section>
 
-    <!-- Interactive Map Section -->
-    <section class="map-section">
-        <h2>Explore Our Cemeteries</h2>
-        <div class="map-container">
-            <p>Interactive Map Placeholder</p>
-            <!-- Replace with actual map integration (e.g., Google Maps API) -->
-        </div>
-    </section>
+ <!-- Interactive Map Section -->
+<section class="map-section">
+    <h2>Explore Our Trusted service Providers,Decor companies and local authorities portfolios here</h2>
+    <div class="map-container">
+        <p>Interactive Map Placeholder</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d5357080.666453993!2d14.227577526317331!3d-22.017644647825758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1snamibia%20map%20with%20cemeteries!5e0!3m2!1sen!2sna!4v1725270362652!5m2!1sen!2sna" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</section>
+
 
     <!-- How It Works Section -->
     <section class="how-it-works-section">
