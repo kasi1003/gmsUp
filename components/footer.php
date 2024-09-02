@@ -8,7 +8,7 @@
         <!-- Section: Social media -->
         <section
           class="d-flex justify-content-between p-4"
-          style="background-color: #6351ce"
+          style="background-color: #96AE8D"
         >
           <!-- Left -->
           <div class="me-5">
@@ -52,7 +52,7 @@
                 <h6 class="text-uppercase fw-bold">Company name</h6>
                 <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
-                  style="width: 60px; background-color: #7c4dff; height: 2px"
+                  style="width: 60px; background-color: #96AE8D; height: 2px"
                 />
                 <p>
                   Here you can use rows and columns to organize your footer
@@ -68,7 +68,7 @@
                 <h6 class="text-uppercase fw-bold">Products</h6>
                 <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
-                  style="width: 60px; background-color: #7c4dff; height: 2px"
+                  style="width: 60px; background-color: #96AE8D; height: 2px"
                 />
                 <p>
                   <a href="#!" class="text-white">MDBootstrap</a>
@@ -91,7 +91,7 @@
                 <h6 class="text-uppercase fw-bold">Useful links</h6>
                 <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
-                  style="width: 60px; background-color: #7c4dff; height: 2px"
+                  style="width: 60px; background-color: #96AE8D; height: 2px"
                 />
                 <p>
                   <a href="#!" class="text-white">Your Account</a>
@@ -114,7 +114,7 @@
                 <h6 class="text-uppercase fw-bold">Contact</h6>
                 <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
-                  style="width: 60px; background-color: #7c4dff; height: 2px"
+                  style="width: 60px; background-color: #96AE8D; height: 2px"
                 />
                 <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
                 <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>

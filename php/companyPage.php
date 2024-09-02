@@ -458,7 +458,7 @@
   </div>
 
   <!--footer-->
-  <?php include('footer.php'); ?>
+  <?php include('../components/footer.php'); ?>
 
   <!-- Add Bootstrap and jQuery scripts here -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
