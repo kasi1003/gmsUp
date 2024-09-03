@@ -75,14 +75,7 @@
                 <a href="register.html" class="btn-primary">Register</a> <!-- Link to Register page -->
             </div>
 =======
-    <h2>Our Features</h2>
-    <div class="feature-grid">
-        <div class="feature-item">
-            <i class="fas fa-map-marker-alt"></i>
-            <h3>Cemetery Locator</h3>
-            <p>Easily find loved ones across various cemeteries.</p>
-            <p>View and navigate cemetery layouts.</p>
->>>>>>> 9cb8dc729fd3db334ea6fa1d23f14e77f52a88dc
+   
         </div>
         <div class="feature-item">
             <i class="fas fa-list-alt"></i>
