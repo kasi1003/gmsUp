@@ -126,34 +126,36 @@
 
     <!-- Footer Section -->
     <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Contact Us</h4>
-                <p>Phone: (123) 456-7890</p>
-                <p>Email: support@heavenlytomb.com</p>
-                <p>Address: 123 Peaceful Lane, Serenity City, ST 12345</p>
-            </div>
-            <div class="footer-column">
-                <h4>Follow Us</h4>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
+    <div class="footer-container">
+        <div class="footer-column">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Contact Us</h4>
+            <p>Phone: (123) 456-7890</p>
+            <p>Email: <a href="mailto:support@heavenlytomb.com">support@heavenlytomb.com</a></p>
+            <p>Address: 123 Peaceful Lane, Serenity City, ST 12345</p>
+        </div>
+        <div class="footer-column">
+            <h4>Follow Us</h4>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Heavenly Tomb. All rights reserved.</p>
-        </div>
-    </footer>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Heavenly Tomb. All rights reserved.</p>
+    </div>
+</footer>
+
+
 
     <!-- JavaScript for Testimonials Carousel -->
     <script>
