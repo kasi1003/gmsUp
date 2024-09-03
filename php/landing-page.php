@@ -187,6 +187,12 @@
             }
         }, 5000);
     </script>
+    
+    <!-- Floating Button -->
+<a href="#contact" class="floating-button">
+    <i class="fas fa-envelope"></i> Contact Us
+</a>
+
 </body>
 
 </html>
