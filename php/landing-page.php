@@ -29,31 +29,32 @@
 
     <!-- Services/Features Section -->
     <section id="features" class="features-section">
-        <h2>Our Features</h2>
-        <div class="feature-grid">
-            <div class="feature-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>Cemetery Locator</h3>
-                <p>Easily find loved ones across various cemeteries.</p>
-                <p>View and navigate cemetery layouts.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-list-alt"></i>
-                <h3>Grave Management</h3>
-                <p>Book and organize graves effortlessly.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-calendar-alt"></i>
-                <h3>Memorial Services</h3>
-                <p>Schedule and manage memorial services.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-map"></i>
-                <h3>Register</h3>
-                <p>Sign up and join our esteemed list pf trusted service providers/local authorities or decor companies </p>
-            </div>
+    <h2>Our Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Cemetery Locator</h3>
+            <p>Easily find loved ones across various cemeteries.</p>
+            <p>View and navigate cemetery layouts.</p>
         </div>
-    </section>
+        <div class="feature-item">
+            <i class="fas fa-list-alt"></i>
+            <h3>Grave Management</h3>
+            <p>Book and organize graves effortlessly.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Memorial Services</h3>
+            <p>Schedule and manage memorial services.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-map"></i>
+            <h3>Register</h3>
+            <p>Sign up and join our esteemed list of trusted service providers/local authorities or decor companies.</p>
+        </div>
+    </div>
+</section>
+
 
     <!-- Testimonials Section -->
     <section class="testimonials-section">

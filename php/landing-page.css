@@ -61,6 +61,43 @@ body {
 .second-nav ul li:hover::after {
     width: 100%;
 }
+.feature-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.feature-item {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 1.5s ease;
+    perspective: 1000px;
+}
+
+.feature-item:hover {
+    transform: rotateY(360deg);
+}
+
+.feature-item i {
+    font-size: 40px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.feature-item h3 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.feature-item p {
+    color: #777;
+    font-size: 16px;
+}
+
 
 /* Main Image Section */
 .main-image {
