@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,27 +6,13 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="landing-page.css">
     <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" 
+        integrity="iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
+
 <body>
-
-<nav class="navbar">
-    <div class="navbar-container">
-        <div class="navbar-logo">
-            <a href="#">Heavenly Tomb</a>
-        </div>
-        <ul class="navbar-menu">
-            <li><a href="./index.php">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="./serviceProvidersPage.php">Services</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </div>
-</nav>
-
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="overlay">
@@ -37,8 +20,8 @@
                 <h1>Heavenly Tomb - Preserving Memories with Dignity</h1>
                 <p>Efficiently manage, locate, and honor those who rest in peace.</p>
                 <div class="cta-buttons">
-                    <a href="get-started.html" class="btn-primary">Get Started</a> <!-- Redirects to the 'Get Started' page -->
-                    <a href="learn-more.html" class="btn-secondary">Learn More</a> <!-- Redirects to the 'Learn More' page -->
+                    <a href="#get-started" class="btn-primary">Get Started</a>
+                    <a href="#features" class="btn-secondary">Learn More</a>
                 </div>
             </div>
         </div>
@@ -46,7 +29,6 @@
 
     <!-- Services/Features Section -->
     <section id="features" class="features-section">
-<<<<<<< HEAD
         <h2>Our Features</h2>
         <div class="feature-grid">
             <div class="feature-item">
@@ -54,47 +36,24 @@
                 <h3>Cemetery Locator</h3>
                 <p>Easily find loved ones across various cemeteries.</p>
                 <p>View and navigate cemetery layouts.</p>
-                <a href="cemetery-locator.html" class="btn-primary">Explore</a> <!-- Link to Cemetery Locator page -->
             </div>
             <div class="feature-item">
                 <i class="fas fa-list-alt"></i>
                 <h3>Grave Management</h3>
                 <p>Book and organize graves effortlessly.</p>
-                <a href="grave-management.html" class="btn-primary">Manage</a> <!-- Link to Grave Management page -->
             </div>
             <div class="feature-item">
                 <i class="fas fa-calendar-alt"></i>
                 <h3>Memorial Services</h3>
                 <p>Schedule and manage memorial services.</p>
-                <a href="memorial-services.html" class="btn-primary">Schedule</a> <!-- Link to Memorial Services page -->
             </div>
             <div class="feature-item">
                 <i class="fas fa-map"></i>
                 <h3>Register</h3>
-                <p>Sign up and join our esteemed list of trusted service providers, local authorities, or decor companies.</p>
-                <a href="register.html" class="btn-primary">Register</a> <!-- Link to Register page -->
+                <p>Sign up and join our esteemed list pf trusted service providers/local authorities or decor companies </p>
             </div>
-=======
-   
         </div>
-        <div class="feature-item">
-            <i class="fas fa-list-alt"></i>
-            <h3>Grave Management</h3>
-            <p>Book and organize graves effortlessly.</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-calendar-alt"></i>
-            <h3>Memorial Services</h3>
-            <p>Schedule and manage memorial services.</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-map"></i>
-            <h3>Register</h3>
-            <p>Sign up and join our esteemed list of trusted service providers/local authorities or decor companies.</p>
-        </div>
-    </div>
-</section>
-
+    </section>
 
     <!-- Testimonials Section -->
     <section class="testimonials-section">
@@ -115,15 +74,15 @@
         </div>
     </section>
 
-    <!-- Interactive Map Section -->
-    <section class="map-section">
-        <h2>Explore Our Trusted Service Providers, Decor Companies, and Local Authorities' Portfolios Here</h2>
-        <div class="map-container">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d5357080.666453993!2d14.227577526317331!3d-22.017644647825758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1snamibia%20map%20with%20cemeteries!5e0!3m2!1sen!2sna!4v1725270362652!5m2!1sen!2sna"
-                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-    </section>
+ <!-- Interactive Map Section -->
+<section class="map-section">
+    <h2>Explore Our Trusted service Providers,Decor companies and local authorities portfolios here</h2>
+    <div class="map-container">
+        <p>Interactive Map Placeholder</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d5357080.666453993!2d14.227577526317331!3d-22.017644647825758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1snamibia%20map%20with%20cemeteries!5e0!3m2!1sen!2sna!4v1725270362652!5m2!1sen!2sna" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</section>
+
 
     <!-- How It Works Section -->
     <section class="how-it-works-section">
@@ -133,25 +92,21 @@
                 <i class="fas fa-search"></i>
                 <h3>Search</h3>
                 <p>Find a cemetery or a loved one’s resting place.</p>
-                <a href="search.html" class="btn-primary">Search</a> <!-- Link to Search page -->
             </div>
             <div class="step-item">
                 <i class="fas fa-info-circle"></i>
                 <h3>View Information</h3>
                 <p>Access detailed information and memorials.</p>
-                <a href="view-information.html" class="btn-primary">View Info</a> <!-- Link to View Information page -->
             </div>
             <div class="step-item">
                 <i class="fas fa-calendar-check"></i>
                 <h3>Schedule Services</h3>
                 <p>Manage and schedule memorial services.</p>
-                <a href="schedule-services.html" class="btn-primary">Schedule</a> <!-- Link to Schedule Services page -->
             </div>
             <div class="step-item">
                 <i class="fas fa-phone-alt"></i>
                 <h3>Contact Us</h3>
                 <p>Get assistance for any other queries.</p>
-                <a href="contact.html" class="btn-primary">Contact</a> <!-- Link to Contact Us page -->
             </div>
         </div>
     </section>
@@ -171,36 +126,34 @@
 
     <!-- Footer Section -->
     <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-column">
-            <h4>Quick Links</h4>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </div>
-        <div class="footer-column">
-            <h4>Contact Us</h4>
-            <p>Phone: (123) 456-7890</p>
-            <p>Email: <a href="mailto:support@heavenlytomb.com">support@heavenlytomb.com</a></p>
-            <p>Address: 123 Peaceful Lane, Serenity City, ST 12345</p>
-        </div>
-        <div class="footer-column">
-            <h4>Follow Us</h4>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact Us</h4>
+                <p>Phone: (123) 456-7890</p>
+                <p>Email: support@heavenlytomb.com</p>
+                <p>Address: 123 Peaceful Lane, Serenity City, ST 12345</p>
+            </div>
+            <div class="footer-column">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2024 Heavenly Tomb. All rights reserved.</p>
-    </div>
-</footer>
-
-
+        <div class="footer-bottom">
+            <p>&copy; 2024 Heavenly Tomb. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- JavaScript for Testimonials Carousel -->
     <script>
@@ -214,14 +167,8 @@
                 testimonials.scrollTo({ left: 0, behavior: 'smooth' });
                 index = 0;
             }
-        }, 3000);
+        }, 5000);
     </script>
-    
-    <!-- Floating Button -->
-<a href="#contact" class="floating-button">
-    <i class="fas fa-envelope"></i> Contact Us
-</a>
-
 </body>
 
 </html>
