@@ -13,6 +13,21 @@
 
 
 <body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-logo">
+            <a href="#">Heavenly Tomb</a>
+        </div>
+        <ul class="navbar-menu">
+            <li><a href="./index.php">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="./serviceProvidersPage.php">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="overlay">
@@ -29,31 +44,32 @@
 
     <!-- Services/Features Section -->
     <section id="features" class="features-section">
-        <h2>Our Features</h2>
-        <div class="feature-grid">
-            <div class="feature-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>Cemetery Locator</h3>
-                <p>Easily find loved ones across various cemeteries.</p>
-                <p>View and navigate cemetery layouts.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-list-alt"></i>
-                <h3>Grave Management</h3>
-                <p>Book and organize graves effortlessly.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-calendar-alt"></i>
-                <h3>Memorial Services</h3>
-                <p>Schedule and manage memorial services.</p>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-map"></i>
-                <h3>Register</h3>
-                <p>Sign up and join our esteemed list pf trusted service providers/local authorities or decor companies </p>
-            </div>
+    <h2>Our Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Cemetery Locator</h3>
+            <p>Easily find loved ones across various cemeteries.</p>
+            <p>View and navigate cemetery layouts.</p>
         </div>
-    </section>
+        <div class="feature-item">
+            <i class="fas fa-list-alt"></i>
+            <h3>Grave Management</h3>
+            <p>Book and organize graves effortlessly.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Memorial Services</h3>
+            <p>Schedule and manage memorial services.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-map"></i>
+            <h3>Register</h3>
+            <p>Sign up and join our esteemed list of trusted service providers/local authorities or decor companies.</p>
+        </div>
+    </div>
+</section>
+
 
     <!-- Testimonials Section -->
     <section class="testimonials-section">
@@ -126,34 +142,36 @@
 
     <!-- Footer Section -->
     <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Contact Us</h4>
-                <p>Phone: (123) 456-7890</p>
-                <p>Email: support@heavenlytomb.com</p>
-                <p>Address: 123 Peaceful Lane, Serenity City, ST 12345</p>
-            </div>
-            <div class="footer-column">
-                <h4>Follow Us</h4>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
+    <div class="footer-container">
+        <div class="footer-column">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Contact Us</h4>
+            <p>Phone: (123) 456-7890</p>
+            <p>Email: <a href="mailto:support@heavenlytomb.com">support@heavenlytomb.com</a></p>
+            <p>Address: 123 Peaceful Lane, Serenity City, ST 12345</p>
+        </div>
+        <div class="footer-column">
+            <h4>Follow Us</h4>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Heavenly Tomb. All rights reserved.</p>
-        </div>
-    </footer>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Heavenly Tomb. All rights reserved.</p>
+    </div>
+</footer>
+
+
 
     <!-- JavaScript for Testimonials Carousel -->
     <script>
@@ -169,6 +187,12 @@
             }
         }, 5000);
     </script>
+    
+    <!-- Floating Button -->
+<a href="#contact" class="floating-button">
+    <i class="fas fa-envelope"></i> Contact Us
+</a>
+
 </body>
 
 </html>
