@@ -178,14 +178,6 @@ $conn->close();
     <div class="register-btn-container">
                 <button id="registerButton" class="btn register-btn">Register Here</button>
             </div>
-
-    <section class="portfolio-section">
-        <div class="container">
-            <h2>Local Decor Companies</h2>
-            <div id="decorCompanies" class="row"></div>
-        </div>
-    </section>
-
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -206,40 +198,6 @@ $conn->close();
         document.getElementById('registerButton').addEventListener('click', function() {
             window.location.href = 'Registration.php';
         });
-        function loadDecorCompanies() {
-    fetch('../php/get_decor_companies.php')
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById('decorCompanies');
-            container.innerHTML = ''; // Clear previous contents
-            data.forEach(company => {
-                const col = document.createElement('div');
-                col.className = 'col-12 col-md-6 col-lg-4 portfolio-item';
-
-                // Handle company logo
-                const logoHtml = company.company_logo ? `<img src="${company.company_logo}" alt="${company.company_name} logo" class="company-logo" />` : '<p>No logo available</p>';
-
-                // Handle portfolio images
-                const imagesHtml = Array.isArray(JSON.parse(company.portfolio_images))
-                    ? JSON.parse(company.portfolio_images).map(img => `<img src="${img}" alt="${company.company_name} portfolio" class="portfolio-image" />`).join('')
-                    : '<p>No images available</p>';
-
-                col.innerHTML = `
-                    <h3>${company.company_name}</h3>
-                    ${logoHtml}
-                    <p>${company.description}</p>
-                    <p>Contact: <a href="mailto:${company.contact_email}">${company.contact_email}</a></p>
-                    <p>Phone: ${company.contact_number}</p>
-                    <div>${imagesHtml}</div>
-                `;
-                container.appendChild(col);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-document.addEventListener('DOMContentLoaded', loadDecorCompanies);
-
 
     </script>
 
