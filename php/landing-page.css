@@ -61,6 +61,88 @@ body {
 .second-nav ul li:hover::after {
     width: 100%;
 }
+.feature-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Add this to your CSS file */
+.navbar {
+    background-color: #333;
+    padding: 15px;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar-logo a {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-menu li {
+    list-style: none;
+}
+
+.navbar-menu a {
+    color: #f1f1f1;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-menu a:hover {
+    background-color: #555;
+}
+
+.feature-item {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 1.5s ease;
+    perspective: 1000px;
+}
+
+.feature-item:hover {
+    transform: rotateY(360deg);
+}
+
+.feature-item i {
+    font-size: 40px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.feature-item h3 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.feature-item p {
+    color: #777;
+    font-size: 16px;
+}
+
 
 /* Main Image Section */
 .main-image {
@@ -165,19 +247,101 @@ body {
 }
 
 /* Footer */
-footer {
-    margin-top: 20px;
-    background-color: #307399;
-    width: 90%;
-    height: 60px;
-    margin: 20px auto;
-    text-align: center;
+/* Footer styles */
+.footer {
+    background-color: #333;
+    color: #f1f1f1;
+    padding: 40px 0;
+}
+
+.footer-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 1em;
-    border-radius: 10px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-column {
+    flex: 1 1 30%;
+    margin-bottom: 20px;
+}
+
+.footer-column h4 {
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    color: #f1f1f1;
+    text-decoration: none;
+}
+
+.footer-column ul li a:hover {
+    color: #ddd;
+}
+
+.footer-column p {
+    color: #ccc;
+}
+
+.footer-column p a {
+    color: #f1f1f1;
+    text-decoration: none;
+}
+
+.footer-column p a:hover {
+    color: #ddd;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: #f1f1f1;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    color: #ddd;
+}
+
+.footer-bottom {
+    background-color: #222;
+    color: #ccc;
+    text-align: center;
+    padding: 15px 0;
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+    .footer-column {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .footer-container {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-icons {
+        justify-content: center;
+    }
 }
 
 /* Map Container */
@@ -187,3 +351,28 @@ footer {
     background-size: cover;
     height: 100%;
 }
+/* Floating Button Styles */
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #96AE8D;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 50px;
+   /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+    text-align: center;
+    font-size: 18px;
+    text-decoration: none;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.floating-button i {
+    margin-right: 8px;
+}
+
+.floating-button:hover {
+    background-color: #96AE8D;
+}
+
